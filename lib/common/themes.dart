@@ -29,6 +29,9 @@ class AppTheme {
               )
           )
       ),
+      textTheme: const TextTheme(
+        bodySmall: TextStyle(fontSize: 12.0, color: Colors.white),
+      ),
     );
   }
 }

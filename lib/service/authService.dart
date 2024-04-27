@@ -1,7 +1,4 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/enums.dart';
-import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
-import 'package:smartproduction_planorama/common/appwriteClient.dart';
 import 'package:smartproduction_planorama/common/logging.dart';
 
 import '../common/constants.dart';
@@ -21,16 +18,11 @@ class AuthService {
   
   
   
-  Future<void> login() async {
+  Future<void> login(String email, String password
+) async {
     try {
       logging.logInfo('Start Login Process');
-      await FlutterWebAuth2.authenticate(
-          url: '${AppwriteConstant.endpoint}/v1/account/sessions/oauth2/microsoft?project=${AppwriteConstant.projectID}',
-          callbackUrlScheme: 'appwrite-callback-${AppwriteConstant.projectID}');
-      await _account.createOAuth2Session(
-        provider: OAuthProvider.microsoft,
-
-      );
+      await _account.createEmailPasswordSession(email: email, password: password);
     } on AppwriteException catch (e, stackTrace) {
       logging.logError('Login failed', e, stackTrace);
     } catch (i, stacktrace) {

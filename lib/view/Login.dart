@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
+import 'package:smartproduction_planorama/viewModels/authProvider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -10,6 +11,11 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,20 +63,34 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       'Planorama'
                     ),
                     TextFormField(
+                      controller: emailController,
                       decoration: const InputDecoration(
-                        labelText: 'Username'
+                        labelText: 'E-Mail',
+                      ),
+                      style: const TextStyle(
+                        color: Colors.white
                       ),
                     ),
                     TextFormField(
+                      controller: passwordController,
+                      obscureText: true,
                       decoration: const InputDecoration(
-                        labelText: 'Password'
+                        labelText: 'Password',
+                      ),
+                      style: const TextStyle(
+                        color: Colors.white
                       ),
                     ),
                     SizedBox(
                       width: 424,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          ref.read(loginProvider).login(
+                            emailController.text,
+                            passwordController.text
+                          );
+                        },
                         child: const Text(
                           style: TextStyle(
                             color: Colors.white,
