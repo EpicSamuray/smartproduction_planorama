@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartproduction_planorama/common/themes.dart';
-import 'package:smartproduction_planorama/view/Login.dart';
+import 'package:smartproduction_planorama/view/windowsFrame.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       title: 'Planorama',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.mainTheme,
-      home: const LoginScreen(),
+      home: const WindowsFrame(),
     );
   }
 }
