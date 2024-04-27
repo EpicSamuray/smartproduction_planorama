@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smartproduction_planorama/service/authService.dart';
-import 'package:smartproduction_planorama/viewModels/authProvider.dart';
+import 'package:smartproduction_planorama/common/constants.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -22,13 +21,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               height: MediaQuery.of(context).size.height * 0.9,
               width: MediaQuery.of(context).size.width * 0.5,
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.blueAccent,
+                decoration: BoxDecoration(
+                  color: HexColors().tertiaryColor.shade900,
                   shape: BoxShape.circle
                 ),
               )
           ),
           Positioned(
+              bottom: 0,
+              right: -250,
               child: Image.asset(
                 height: MediaQuery.of(context).size.width * 0.25,
                 fit: BoxFit.fill,
@@ -41,7 +42,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               height: 621,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
-                color: Colors.amber,
+                color: HexColors().secondColor.shade900,
               ),
               padding: const EdgeInsets.all(64),
               child: Center(

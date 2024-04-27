@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartproduction_planorama/common/themes.dart';
 import 'package:smartproduction_planorama/view/Login.dart';
 
 class MyApp extends StatelessWidget {
@@ -10,11 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Planorama',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        scaffoldBackgroundColor: Colors.black45,
-        useMaterial3: true,
-      ),
+      theme: AppTheme.mainTheme,
       home: const LoginScreen(),
     );
   }
