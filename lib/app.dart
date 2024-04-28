@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       title: 'Planorama',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.mainTheme,
-      home: const WindowsFrame(),
+      home: WindowsFrame(),
     );
   }
 }
