@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
-import 'package:smartproduction_planorama/viewModels/authProvider.dart';
+import 'package:smartproduction_planorama/providers/login.controller.provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -86,10 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          ref.read(loginProvider).login(
-                            emailController.text,
-                            passwordController.text
-                          );
+                          ref.read(loginControllerProvider.notifier).login(emailController.text, passwordController.text);
                         },
                         child: const Text(
                           style: TextStyle(

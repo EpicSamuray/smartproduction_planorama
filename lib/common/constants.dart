@@ -10,3 +10,8 @@ class HexColors {
   final primaryColor = createMaterialColor('#161616');
   final tertiaryColor = createMaterialColor('#00adc8');
 }
+
+enum AppRoutes {
+  home,
+  login
+}
