@@ -1,18 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smartproduction_planorama/common/router.dart';
 import 'package:smartproduction_planorama/common/themes.dart';
-import 'package:smartproduction_planorama/view/windowsFrame.dart';
+import 'package:smartproduction_planorama/view/widget/windowTitleBar.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
+    return MaterialApp.router(
+      routerConfig: router,
       title: 'Planorama',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.mainTheme,
-      home: WindowsFrame(),
+      builder: (context, child) {
+        return Overlay(
+          initialEntries: [
+            OverlayEntry(builder: (context) => Scaffold(body: child!)),
+            OverlayEntry(
+              builder: (context) => const Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Material(
+                  color: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  elevation: 4,
+                  child: WindowTitleBar(title: 'Planorama'),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
