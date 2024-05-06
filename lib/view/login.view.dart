@@ -28,7 +28,7 @@ class _LoginScreenState extends ConsumerState<LoginView> {
               width: MediaQuery.of(context).size.width * 0.5,
               child: Container(
                 decoration: BoxDecoration(
-                  color: HexColors().tertiaryColor.shade900,
+                  color: HexColors.tertiaryColor.shade900,
                   shape: BoxShape.circle
                 ),
               )
@@ -48,7 +48,7 @@ class _LoginScreenState extends ConsumerState<LoginView> {
               height: 621,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
-                color: HexColors().secondColor.shade900,
+                color: HexColors.secondColor.shade900,
               ),
               padding: const EdgeInsets.all(64),
               child: Center(

@@ -36,41 +36,44 @@ class RouterNotifier extends ChangeNotifier {
 
     //Login Redirect Logic
     final loginState = _ref.read(loginControllerProvider);
-
     final loggingIn = state.matchedLocation == RoutesPaths.login;
+    return checkLoginStates(loggingIn, loginState);
 
-    if (loginState is LoginStateInitial) {
-      log.logDebug('LoginState: $loginState');
-      return loggingIn ? null : RoutesPaths.login;
+
     }
 
-    if (loginState is LoginStateError) {
-      log.logDebug('LoginState: $loginState');
-      return loggingIn ? null : RoutesPaths.login;
-    }
-
-    if (loggingIn) {
-     log.logDebug('LoggingIn: $loggingIn');
-      return RoutesPaths.home;
-    }
-
-
-
-      return null;
-    }
-
-  List<GoRoute> get _routes => [
-    GoRoute(
-      path: RoutesPaths.root,
-      builder: (context, state) => const SideNavigationWidget(),
+  List<RouteBase> get _routes => [
+    ShellRoute(
+      builder: (context, state, child) {
+        return SideNavigationWidget(child: child);
+      },
+        routes: [
+          GoRoute(
+            path: RoutesPaths.root,
+            builder: (context, state) => const HomeView()
+          ),
+        ]
     ),
     GoRoute(
       path: RoutesPaths.login,
       builder: (context, state) => const LoginView(),
     ),
-    GoRoute(
-      path: RoutesPaths.home,
-      builder: (context, state) => const HomeView()
-    )
   ];
+}
+
+String? checkLoginStates(bool loggingIn, LoginState loginState) {
+  switch (loginState.runtimeType) {
+    case LoginStateInitial:
+      log.logDebug('LoginState: $loginState');
+      return loggingIn ? null : RoutesPaths.login;
+    case LoginStateError:
+      log.logDebug('LoginState: $loginState');
+      return loggingIn ? null : RoutesPaths.login;
+    case LoginStateLoading:
+      log.logDebug('LoginState: $loginState');
+      return null;
+    default:
+      log.logDebug('LoginState: $loginState');
+      return RoutesPaths.root;
+  }
 }
