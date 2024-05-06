@@ -5,7 +5,7 @@ class AppTheme {
   static ThemeData get mainTheme {
     return ThemeData(
       primarySwatch: HexColors().primaryColor,
-      scaffoldBackgroundColor: HexColors().primaryColor.shade900,
+      scaffoldBackgroundColor: HexColors().secondColor.shade900,
 
       inputDecorationTheme: InputDecorationTheme(
           fillColor: HexColors().primaryColor.shade900,

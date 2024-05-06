@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smartproduction_planorama/common/constants.dart';
+import 'package:smartproduction_planorama/view/home.view.dart';
+import 'package:smartproduction_planorama/view/widget/sidenavigation.widget.dart';
 
 import '../providers/login.controller.provider.dart';
 import '../providers/states/login.states.dart';
-import '../view/Login.dart';
-import '../view/home.dart';
+import '../view/login.view.dart';
 import 'logging.dart';
+
+final log = Logging('router.dart');
 
 final routerProvider = Provider<GoRouter>((ref) {
   final router = RouterNotifier(ref);
@@ -19,7 +23,6 @@ final routerProvider = Provider<GoRouter>((ref) {
 });
 
 class RouterNotifier extends ChangeNotifier {
-  final Logging log = Logging();
   final Ref _ref;
 
   RouterNotifier(this._ref) {
@@ -30,40 +33,44 @@ class RouterNotifier extends ChangeNotifier {
   }
 
   String? _redirectLogic (BuildContext context, GoRouterState state) {
+
+    //Login Redirect Logic
     final loginState = _ref.read(loginControllerProvider);
 
-    final loggingIn = state.matchedLocation == '/login';
-
-    log.logInfo('RouterNotifier: loginState._redirectLogic is $loginState');
-    log.logInfo('RouterNotifier: loggingIn._redirectLogic is $loggingIn');
+    final loggingIn = state.matchedLocation == RoutesPaths.login;
 
     if (loginState is LoginStateInitial) {
-      log.logInfo('RouterNotifier: loginState._redirectLogic is $loginState');
-      return loggingIn ? null : '/login';
+      log.logDebug('LoginState: $loginState');
+      return loggingIn ? null : RoutesPaths.login;
     }
 
     if (loginState is LoginStateError) {
-      log.logInfo('RouterNotifier: loginState._redirectLogic is $loginState');
-      return loggingIn ? null : '/error';
+      log.logDebug('LoginState: $loginState');
+      return loggingIn ? null : RoutesPaths.login;
     }
 
     if (loggingIn) {
-     log.logInfo('RouterNotifier: loggingIn._redirectLogic is $loggingIn');
-      return '/';
+     log.logDebug('LoggingIn: $loggingIn');
+      return RoutesPaths.home;
     }
+
+
+
       return null;
     }
 
   List<GoRoute> get _routes => [
     GoRoute(
-      name: 'home',
-      path: '/',
-      builder: (context, state) => const HomeScreen(),
+      path: RoutesPaths.root,
+      builder: (context, state) => const SideNavigationWidget(),
     ),
     GoRoute(
-      name: 'login',
-      path: '/login',
-      builder: (context, state) => const LoginScreen(),
+      path: RoutesPaths.login,
+      builder: (context, state) => const LoginView(),
     ),
+    GoRoute(
+      path: RoutesPaths.home,
+      builder: (context, state) => const HomeView()
+    )
   ];
 }

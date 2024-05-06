@@ -11,7 +11,8 @@ class HexColors {
   final tertiaryColor = createMaterialColor('#00adc8');
 }
 
-enum AppRoutes {
-  home,
-  login
+class RoutesPaths {
+  static const String login = '/login';
+  static const String home = '/home';
+  static const String root = '/';
 }
