@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/common/router.dart';
-import 'package:smartproduction_planorama/common/themes.dart';
-import 'package:smartproduction_planorama/view/widget/windowTitleBar.dart';
+import 'package:smartproduction_planorama/common/app.theme.dart';
+import 'package:smartproduction_planorama/view/widget/window.titlebar.widget.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
@@ -29,7 +29,7 @@ class MyApp extends ConsumerWidget {
                   color: Colors.transparent,
                   shadowColor: Colors.transparent,
                   elevation: 4,
-                  child: WindowTitleBar(title: 'Planorama'),
+                  child: WindowTitleBarWidget(title: 'Planorama'),
                 ),
               ),
             ),

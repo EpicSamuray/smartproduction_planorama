@@ -14,8 +14,8 @@ final closeButtonColors = WindowButtonColors(
     iconNormal: const Color(0xFF805306),
     iconMouseOver: Colors.white);
 
-class WindowsButtons extends StatelessWidget {
-  const WindowsButtons({super.key});
+class WindowButtonsWidget extends StatelessWidget {
+  const WindowButtonsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

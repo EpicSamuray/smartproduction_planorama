@@ -6,12 +6,18 @@ class AppwriteConstant {
 }
 
 class HexColors {
-  final secondColor = createMaterialColor('#323232');
-  final primaryColor = createMaterialColor('#161616');
-  final tertiaryColor = createMaterialColor('#00adc8');
+  static final primaryColor = createMaterialColor('#333333');
+  static final secondColor = createMaterialColor('#666666');
+  static final tertiaryColor = createMaterialColor('#00ADC8');
+  static final quaternaryColor = createMaterialColor('#FFFFFF');
 }
 
-enum AppRoutes {
-  home,
-  login
+class RoutesPaths {
+  static const String login = '/login';
+  static const String home = '/home';
+  static const String root = '/';
+}
+
+class ImagePaths {
+  static const String logo = 'assets/images/logo/20_Logo_Transparent.png';
 }

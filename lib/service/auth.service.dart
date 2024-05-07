@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/common/logging.dart';
 import '../common/constants.dart';
 
+final log = Logging('auth.service.dart');
+
 final clientProvider = Provider<Client>((ref) {
   return Client()
       .setEndpoint('${AppwriteConstant.endpoint}/v1')
@@ -17,7 +19,6 @@ final authServiceProvider = Provider<AuthService>((ref) {
 
 class AuthService {
   final Client _client;
-  final logging = Logging();
 
   AuthService(this._client);
 
@@ -34,29 +35,29 @@ class AuthService {
 
   Future<User> getUser() async {
     try {
-      logging.logInfo('Start Get User Process');
+      log.logInfo('Start Get User Process');
       return await account.get();
     } on AppwriteException catch (e, stackTrace) {
-      logging.logError('Get User failed', e, stackTrace);
+      log.logError('Get User failed', e, stackTrace);
       rethrow;
     } catch (i, stacktrace) {
-      logging.logError('System Error', i, stacktrace);
+      log.logError('System Error', i, stacktrace);
       rethrow;
     } finally {
-      logging.logInfo('User: $User');
+      log.logInfo('User: $User');
     }
   }
 
   Future<Session> login(String email, String password) async {
     try {
-      logging.logInfo('Start Login Process');
+      log.logInfo('Start Login Process');
       return await account.createEmailPasswordSession(
           email: email, password: password);
     } on AppwriteException catch (e, stackTrace) {
-      logging.logError('Login failed', e, stackTrace);
+      log.logError('Login failed', e, stackTrace);
       rethrow;
     } catch (i, stacktrace) {
-      logging.logError('System Error', i, stacktrace);
+      log.logError('System Error', i, stacktrace);
       rethrow;
     }
   }
@@ -65,9 +66,9 @@ class AuthService {
     try {
       await account.deleteSession(sessionId: 'current');
     } on AppwriteException catch (e, stackTrace) {
-      logging.logError('Logout failed', e, stackTrace);
+      log.logError('Logout failed', e, stackTrace);
     } catch (i, stacktrace) {
-      logging.logError('System Error', i, stacktrace);
+      log.logError('System Error', i, stacktrace);
     }
   }
 }

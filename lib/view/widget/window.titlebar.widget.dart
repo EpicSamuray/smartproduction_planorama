@@ -1,10 +1,10 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:smartproduction_planorama/view/widget/windowsButtons.dart';
+import 'package:smartproduction_planorama/view/widget/window.buttons.widget.dart';
 
-class WindowTitleBar extends StatelessWidget implements PreferredSizeWidget {
+class WindowTitleBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  const WindowTitleBar({super.key, required this.title});
+  const WindowTitleBarWidget({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class WindowTitleBar extends StatelessWidget implements PreferredSizeWidget {
                             ),
                           ),
             )))),
-            const WindowsButtons()
+            const WindowButtonsWidget()
           ],
         )
     );
