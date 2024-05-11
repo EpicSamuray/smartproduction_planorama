@@ -6,6 +6,10 @@ class AppTheme {
     return ThemeData(
       primarySwatch: HexColors.primaryColor,
       scaffoldBackgroundColor: HexColors.primaryColor.shade900,
+      iconTheme: IconThemeData(
+        color: HexColors.tertiaryColor.shade900,
+        size: 30,
+      ),
       inputDecorationTheme: InputDecorationTheme(
           fillColor: HexColors.primaryColor.shade900,
           filled: true,

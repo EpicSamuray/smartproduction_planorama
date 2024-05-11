@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smartproduction_planorama/providers/login.controller.provider.dart';
+import 'package:smartproduction_planorama/common/constants.dart';
+import 'package:smartproduction_planorama/repository/storage.repository.dart';
+
+import '../providers/storage.provider.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -15,7 +18,7 @@ class _HomeScreenState extends ConsumerState<HomeView> {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          ref.read(loginControllerProvider.notifier).logout();
+          ref.read(storageRepositoryProvider).downloadFile(AppwriteConstant.collectionID, '663fea8f002f2f898b4a');
         },
         child: const Text('Go back!'),
       ),

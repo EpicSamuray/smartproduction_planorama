@@ -1,8 +1,22 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/common/router.dart';
 import 'package:smartproduction_planorama/common/app.theme.dart';
 import 'package:smartproduction_planorama/view/widget/window.titlebar.widget.dart';
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.trackpad
+    // etc.
+  };
+}
+
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
@@ -16,6 +30,7 @@ class MyApp extends ConsumerWidget {
       title: 'Planorama',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.mainTheme,
+      scrollBehavior: MyCustomScrollBehavior(),
       builder: (context, child) {
         return Overlay(
           initialEntries: [

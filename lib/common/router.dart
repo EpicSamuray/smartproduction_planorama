@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
 import 'package:smartproduction_planorama/view/home.view.dart';
+import 'package:smartproduction_planorama/view/machine_planning.view.dart';
 import 'package:smartproduction_planorama/view/widget/sidenavigation.widget.dart';
 
 import '../providers/login.controller.provider.dart';
@@ -52,6 +53,10 @@ class RouterNotifier extends ChangeNotifier {
             path: RoutesPaths.root,
             builder: (context, state) => const HomeView()
           ),
+          GoRoute(
+            path: RoutesPaths.machine_planning,
+            builder: (context, state) => const MachinePlanningView()
+          )
         ]
     ),
     GoRoute(
@@ -64,16 +69,16 @@ class RouterNotifier extends ChangeNotifier {
 String? checkLoginStates(bool loggingIn, LoginState loginState) {
   switch (loginState.runtimeType) {
     case LoginStateInitial:
-      log.logDebug('LoginState: $loginState');
+      log.logDebug('Initial - LoginState: $loginState');
       return loggingIn ? null : RoutesPaths.login;
     case LoginStateError:
-      log.logDebug('LoginState: $loginState');
+      log.logDebug('Error - LoginState: $loginState');
       return loggingIn ? null : RoutesPaths.login;
     case LoginStateLoading:
-      log.logDebug('LoginState: $loginState');
+      log.logDebug('Loading - LoginState: $loginState');
       return null;
     default:
-      log.logDebug('LoginState: $loginState');
-      return RoutesPaths.root;
+      log.logDebug('default - LoginState: $loginState');
+      return loggingIn ? RoutesPaths.root : null;
   }
 }
