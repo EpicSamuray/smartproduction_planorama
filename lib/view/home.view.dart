@@ -18,7 +18,7 @@ class _HomeScreenState extends ConsumerState<HomeView> {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          ref.read(storageRepositoryProvider).downloadFile(AppwriteConstant.collectionID, '663fea8f002f2f898b4a');
+          ref.read(storageRepositoryProvider).downloadFile('test',AppwriteConstant.collectionID, '663fea8f002f2f898b4a');
         },
         child: const Text('Go back!'),
       ),

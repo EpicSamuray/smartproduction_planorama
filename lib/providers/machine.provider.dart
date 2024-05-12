@@ -1,40 +1,53 @@
 
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
 import 'package:smartproduction_planorama/models/machine.card.dto.dart';
 import 'package:smartproduction_planorama/repository/machine.repository.dart';
 
-import '../service/machine.service.dart';
+import '../common/logging.dart';
 
-final machineProvider = StateNotifierProvider<MachineNotifier, List<MachineCardDto>>((ref) {
+final Logging log = Logging('machine.provider.dart');
+
+final machineProvider = StateNotifierProvider<MachineNotifier, AsyncValue<List<MachineCardDto>>>((ref) {
   return MachineNotifier(ref.read(machineRepositoryProvider));
 });
 
 final machineRepositoryProvider = Provider<MachineRepository>((ref) {
-  return MachineRepository(ref.read(machineServiceProvider));
+  return MachineRepository();
 });
 
-final machineServiceProvider = Provider<MachineService>((ref) => MachineService(Hive.box<MachineCardDto>('machineCardDto')));
 
-class MachineNotifier extends StateNotifier<List<MachineCardDto>> {
+class MachineNotifier extends StateNotifier<AsyncValue<List<MachineCardDto>>> {
   final MachineRepository repo;
 
-  MachineNotifier(this.repo) : super([]) {
-   loadMachineCardDto();
+  MachineNotifier(this.repo) : super(AsyncValue.loading()) {
+   init();
   }
 
-  void loadMachineCardDto() {
-    state = repo.getAllMachineCardDto();
+  Future<void> init() async {
+    await repo.openBox();
+    await loadMachineCardDto();
   }
 
-  void addMachineCardDto(MachineCardDto machineCardDto) {
+  Future<void> loadMachineCardDto() async {
+    state = const AsyncValue.loading();
+    try{
+      log.logInfo('Loading Machine Card Dto');
+      List<MachineCardDto> machineCardDto = repo.getAllMachineCardDto();
+      state = AsyncValue.data(machineCardDto);
+      log.logInfo('Machine Card Dto loaded');
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
+
+  Future<void> addMachineCardDto(MachineCardDto machineCardDto) async{
     repo.addMachineCardDto(machineCardDto);
-    loadMachineCardDto();
+    await loadMachineCardDto();
   }
 
-  void removeMachineCardDto(MachineCardDto machineCardDto) {
+  Future<void> removeMachineCardDto(MachineCardDto machineCardDto) async{
     repo.removeMachineCardDto(machineCardDto);
-    loadMachineCardDto();
+    await loadMachineCardDto();
   }
 }

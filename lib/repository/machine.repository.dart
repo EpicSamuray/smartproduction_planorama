@@ -1,22 +1,28 @@
-import 'package:smartproduction_planorama/service/machine.service.dart';
+import 'package:hive/hive.dart';
 
+import '../common/logging.dart';
 import '../models/machine.card.dto.dart';
+
+final Logging log = Logging('machine.repository.dart');
 
 
 class MachineRepository {
-  final MachineService _dataSource;
+  late Box<MachineCardDto> machineCardDtoBox;
 
-  MachineRepository(this._dataSource);
+  Future<void> openBox() async {
+    machineCardDtoBox = await Hive.openBox<MachineCardDto>('machineCardDtoBox');
+    log.logInfo('Machine Card Dto Box opened');
+  }
 
   List<MachineCardDto> getAllMachineCardDto() {
-    return _dataSource.getAllMachineCardDto();
+    return machineCardDtoBox.values.toList();
   }
 
   void addMachineCardDto(MachineCardDto machineCardDto) {
-    _dataSource.addMachineCardDto(machineCardDto);
+    machineCardDtoBox.add(machineCardDto);
   }
 
   void removeMachineCardDto(MachineCardDto machineCardDto) {
-    _dataSource.removeMachineCardDto(machineCardDto);
+    machineCardDtoBox.delete(machineCardDto.key);
   }
 }

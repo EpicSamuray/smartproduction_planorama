@@ -5,6 +5,7 @@ import '../common/logging.dart';
 import '../repository/storage.repository.dart';
 import '../service/storage.service.dart';
 import 'client.provider.dart';
+import 'machine.provider.dart';
 
 final log = Logging('storage.provider.dart');
 
@@ -18,5 +19,5 @@ final storageServiceProvider = Provider<StorageService>((ref) {
 });
 
 final storageRepositoryProvider = Provider<StorageRepository>((ref) {
-  return StorageRepository(ref.watch(storageServiceProvider));
+  return StorageRepository(ref.watch(storageServiceProvider), ref.read(machineProvider.notifier));
 });
