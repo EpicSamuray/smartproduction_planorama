@@ -1,8 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/common/logging.dart';
-import '../providers/client.provider.dart';
 
 final log = Logging('auth.service.dart');
 

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smartproduction_planorama/common/constants.dart';
-
-import '../providers/storage.provider.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
