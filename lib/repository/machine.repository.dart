@@ -25,4 +25,21 @@ class MachineRepository {
   void removeMachineCardDto(MachineCardDto machineCardDto) {
     machineCardDtoBox.delete(machineCardDto.key);
   }
+
+
+  List<MachineCardDto> searchMachineCardDto(String fieldName, dynamic searchValue) {
+    return machineCardDtoBox.values.where((element) {
+      switch(fieldName) {
+        case 'imagesLocationPath':
+          return element.imagesLocationPath == searchValue;
+        case 'machineName':
+          return element.machineName == searchValue;
+        case 'imageId':
+          return element.imageId == searchValue;
+        default:
+          return false;
+      }
+    }).toList();
+  }
+
 }

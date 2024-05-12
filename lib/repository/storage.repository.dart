@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:appwrite/models.dart';
 import 'package:smartproduction_planorama/models/machine.card.dto.dart';
 import 'package:smartproduction_planorama/providers/machine.provider.dart';
 
@@ -17,23 +20,41 @@ class StorageRepository {
   Future<String> downloadFile(String machineName, String bucketId, String fileId) async {
     bool isDownloaded = false;
     String path = '';
-    Map<String, dynamic> result  = await _storageService.downloadImages(bucketId, fileId);
+    _machineProvider.searchMachineCardDto('imageId', fileId).then((value) async {
+      if (value.isEmpty) {
+        log.logInfo('File already downloaded');
+        Map<String, dynamic> result  = await _storageService.downloadImages(bucketId, fileId);
 
-    isDownloaded = result['isDownloaded'];
-    path = result['path'];
+        isDownloaded = result['isDownloaded'];
+        path = result['path'];
 
-    if (isDownloaded) {
-      MachineCardDto machineCardDto = MachineCardDto(
-          imagesLocationPath: path,
-          machineName: machineName,
-          imageId: fileId
-      );
-      log.logInfo('File downloaded to $path');
-      _machineProvider.addMachineCardDto(machineCardDto);
-      return path;
-    } else {
-      log.logError('Error downloading file');
-      return '';
+
+
+        if (isDownloaded) {
+          MachineCardDto machineCardDto = MachineCardDto(
+              imagesLocationPath: path,
+              machineName: machineName,
+              imageId: fileId
+          );
+          log.logInfo('File downloaded to $path');
+          _machineProvider.addMachineCardDto(machineCardDto);
+          return path;
+        } else {
+          log.logError('Error downloading file');
+          return '';
+        }
+      }
+    });
+    return path;
+  }
+
+  Future<void> uploadFile(String fileName, String bucketId, Uint8List file) async {
+    try {
+      File uploadedFile = await _storageService.uploadImages(fileName, bucketId, file);
+      log.logInfo('File uploaded: ${uploadedFile.name}');
+
+    } catch (e) {
+      log.logError('Error uploading file: $e');
     }
   }
 }

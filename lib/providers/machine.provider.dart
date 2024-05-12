@@ -50,4 +50,10 @@ class MachineNotifier extends StateNotifier<AsyncValue<List<MachineCardDto>>> {
     repo.removeMachineCardDto(machineCardDto);
     await loadMachineCardDto();
   }
+
+  Future<List<MachineCardDto>> searchMachineCardDto(String fieldName, dynamic searchValue) async {
+    List<MachineCardDto> machineCardDto = repo.searchMachineCardDto(fieldName, searchValue);
+    log.logInfo('Machine Card Dto found: $machineCardDto');
+    return machineCardDto;
+  }
 }

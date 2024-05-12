@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as AppwriteModels;
 import 'package:smartproduction_planorama/common/logging.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -44,10 +45,22 @@ class StorageService {
         'path': '',
       };
     }
-
-
   }
 
-
-
+  Future<AppwriteModels.File> uploadImages(String fileName,String bucketId, Uint8List file) async {
+    try {
+      return await _staorage.createFile(
+        bucketId: bucketId,
+        fileId: ID.unique(),
+        file: InputFile.fromBytes(bytes: file, filename: fileName),
+        permissions: ['read("any")'],
+      );
+    } on AppwriteException catch (e) {
+      log.logError('Error uploading file: ${e.message}');
+      rethrow;
+    } catch (e) {
+      log.logError('Error uploading file: $e');
+      rethrow;
+    }
+  }
 }
