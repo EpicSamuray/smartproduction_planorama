@@ -6,10 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
 import 'package:smartproduction_planorama/view/widget/menu.button.widget.dart';
 import 'package:smartproduction_planorama/view/widget/menu.list.widget.dart';
-import 'package:smartproduction_planorama/common/constants.dart';
 
 import '../../common/logging.dart';
-import '../../providers/login.controller.provider.dart';
+import '../../providers/login.provider.dart';
 
 final log = Logging('sidenavigation.widget.dart');
 
@@ -116,7 +115,7 @@ class _SideNavigationWidgetState extends ConsumerState<SideNavigationWidget> {
                                 height: 50,
                                 onPressed: () {
                                   ref
-                                      .read(loginControllerProvider.notifier)
+                                      .read(loginProvider.notifier)
                                       .logout();
                                 },
                                 icon: const Icon(Icons.logout,

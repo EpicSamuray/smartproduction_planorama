@@ -19,7 +19,3 @@ class AuthRepository {
     return _authService.isLoggedIn();
   }
 }
-
-final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return AuthRepository(ref.read(authServiceProvider));
-});

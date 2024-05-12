@@ -6,7 +6,7 @@ import 'package:smartproduction_planorama/view/home.view.dart';
 import 'package:smartproduction_planorama/view/machine_planning.view.dart';
 import 'package:smartproduction_planorama/view/widget/sidenavigation.widget.dart';
 
-import '../providers/login.controller.provider.dart';
+import '../providers/login.provider.dart';
 import '../providers/states/login.states.dart';
 import '../view/login.view.dart';
 import 'logging.dart';
@@ -28,7 +28,7 @@ class RouterNotifier extends ChangeNotifier {
 
   RouterNotifier(this._ref) {
     _ref.listen<LoginState>(
-      loginControllerProvider,
+      loginProvider,
         (_, __) => notifyListeners(),
     );
   }
@@ -36,7 +36,7 @@ class RouterNotifier extends ChangeNotifier {
   String? _redirectLogic (BuildContext context, GoRouterState state) {
 
     //Login Redirect Logic
-    final loginState = _ref.read(loginControllerProvider);
+    final loginState = _ref.read(loginProvider);
     final loggingIn = state.matchedLocation == RoutesPaths.login;
     return checkLoginStates(loggingIn, loginState);
 

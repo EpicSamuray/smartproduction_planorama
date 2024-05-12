@@ -2,12 +2,16 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:smartproduction_planorama/common/logging.dart';
 
 import 'app.dart';
 
-void main() {
+void main() async {
   debugPaintSizeEnabled = false;
-  runApp(const ProviderScope(child: MyApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  runApp(ProviderScope(observers: [ProvidersLogger()], child: const MyApp()));
 
   doWhenWindowReady(() {
     final win = appWindow;

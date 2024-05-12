@@ -7,10 +7,6 @@ import '../providers/client.provider.dart';
 final log = Logging('auth.service.dart');
 
 
-final authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService(ref.read(clientProvider));
-});
-
 class AuthService {
   final Client _client;
 
