@@ -19,7 +19,7 @@ class MachineCardDtoAdapter extends TypeAdapter<MachineCardDto> {
     return MachineCardDto(
       imagesLocationPath: fields[0] as String,
       machineName: fields[1] as String,
-      imageId: fields[2] as String,
+      fileId: fields[2] as String,
     );
   }
 
@@ -32,7 +32,7 @@ class MachineCardDtoAdapter extends TypeAdapter<MachineCardDto> {
       ..writeByte(1)
       ..write(obj.machineName)
       ..writeByte(2)
-      ..write(obj.imageId);
+      ..write(obj.fileId);
   }
 
   @override

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
-import 'package:smartproduction_planorama/repository/storage.repository.dart';
 
 import '../providers/storage.provider.dart';
 
@@ -18,7 +17,6 @@ class _HomeScreenState extends ConsumerState<HomeView> {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          ref.read(storageRepositoryProvider).downloadFile('test',AppwriteConstant.collectionID, '663fea8f002f2f898b4a');
         },
         child: const Text('Go back!'),
       ),

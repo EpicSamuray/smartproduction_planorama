@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:dotted_border/dotted_border.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
@@ -63,7 +61,7 @@ class _MachinePlanningViewState extends ConsumerState<MachinePlanningView> {
                                       blur: 3,
                                       onPressed: () {
                                         log.logInfo(
-                                            'Machine ${machines[index - 1].imageId} pressed');
+                                            'Machine ${machines[index - 1].fileId} pressed');
                                       },
                                     ));
                         },
@@ -85,6 +83,8 @@ class _MachinePlanningViewState extends ConsumerState<MachinePlanningView> {
 }
 
 void showAddMachineDialog(BuildContext context, WidgetRef ref) {
+  final _machinNameController = TextEditingController();
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -92,83 +92,92 @@ void showAddMachineDialog(BuildContext context, WidgetRef ref) {
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: AlertDialog(
           backgroundColor: HexColors.primaryColor.shade300,
-          title: const Text('Add Ressource', style: TextStyle(color: Colors.white)),
+          title: const Text('Add Ressource',
+              style: TextStyle(color: Colors.white)),
           content: SizedBox(
               width: 600,
               height: 400,
               child: Row(
                 children: [
-                  Expanded(
-                      child: Consumer(
-                          builder: (context, ref, child) {
-                            return ref.watch(filePickerProvider).when(
-                              data: (Map<String, dynamic> data) {
-                                if (data['file'] == null) {
-                                  return DottedBorder(
-                                    borderType: BorderType.RRect,
-                                    dashPattern: const [20, 20, 20, 20],
-                                    radius: const Radius.circular(15),
-                                    color: HexColors.tertiaryColor.shade900,
-                                    strokeWidth: 3,
-                                    child: SizedBox.expand(
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.all(Radius.circular(15)),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            log.logInfo('Upload image pressed');
-                                            ref.read(filePickerProvider.notifier).pickFile();
-                                          },
-                                          child: const Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.max,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Icon(Icons.upload, size: 100),
-                                              Text('Upload Image', style: TextStyle(color: Colors.white)),
-                                            ],
-                                          ),
-                                        ),
+                  Expanded(child: Consumer(builder: (context, ref, child) {
+                    return ref.watch(filePickerProvider).when(
+                          data: (Map<String, dynamic> data) {
+                            if (data['file'] == null) {
+                              return DottedBorder(
+                                borderType: BorderType.RRect,
+                                dashPattern: const [20, 20, 20, 20],
+                                radius: const Radius.circular(15),
+                                color: HexColors.tertiaryColor.shade900,
+                                strokeWidth: 3,
+                                child: SizedBox.expand(
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(15)),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        log.logInfo('Upload image pressed');
+                                        ref
+                                            .read(filePickerProvider.notifier)
+                                            .pickFile();
+                                      },
+                                      child: const Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.upload, size: 100),
+                                          Text('Upload Image',
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        ],
                                       ),
                                     ),
-                                  );
-                                } else {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Image.memory(data['file'] as Uint8List, width: 200),
-                                      const SizedBox(height: 20),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          ref.read(filePickerProvider.notifier).pickFile();
-                                        },
-                                        child: const Text('ändern'),
-                                      ),
-                                    ],
-                                  );
-                                }
-                              },
-                              error: (Object error, StackTrace stackTrace) => Text('Error: $error'),
-                              loading: () => const CircularProgressIndicator(),
-                            );
-                          }
-                      )
-                  ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Image.memory(data['file'] as Uint8List,
+                                      width: 200),
+                                  const SizedBox(height: 20),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      ref
+                                          .read(filePickerProvider.notifier)
+                                          .pickFile();
+                                    },
+                                    child: const Text('ändern'),
+                                  ),
+                                ],
+                              );
+                            }
+                          },
+                          error: (Object error, StackTrace stackTrace) =>
+                              Text('Error: $error'),
+                          loading: () => const CircularProgressIndicator(),
+                        );
+                  })),
                   const SizedBox(width: 20),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         TextField(
-                          decoration: InputDecoration(labelText: 'Machine Name'),
+                          controller: _machinNameController,
+                          decoration:
+                              const InputDecoration(labelText: 'Machine Name'),
                         ),
                       ],
                     ),
                   ),
                 ],
-              )
-          ),
+              )),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -180,21 +189,22 @@ void showAddMachineDialog(BuildContext context, WidgetRef ref) {
             TextButton(
               onPressed: () {
                 ref.read(filePickerProvider.notifier).state.when(
-                  data: (Map<String, dynamic> file) {
-                    log.logInfo('File: ${file['fileName']}');
+                      data: (Map<String, dynamic> file) async {
+                        log.logInfo('File: ${file['fileName']}');
 
-                    if (file['file'] != null) {
-                      log.logDebug('Uploading file: ${file.length}');
-                      ref.read(storageRepositoryProvider).uploadFile(
-                        file['fileName'] as String,
-                        AppwriteConstant.collectionID,
-                        file['file'] as Uint8List,
-                      );
-                    }
-                  },
-                  error: (Object error, StackTrace stackTrace) => log.logError('Error: $error', stackTrace),
-                  loading: () => log.logDebug('Loading'),
-                );
+                        if (file['file'] != null) {
+                          log.logDebug('Uploading file: ${file.length}');
+                          await ref.read(storageRepositoryProvider).uploadFile(
+                                file['fileName'] as String,
+                                AppwriteConstant.bucketId,
+                                file['file'] as Uint8List,
+                              );
+                        }
+                      },
+                      error: (Object error, StackTrace stackTrace) =>
+                          log.logError('Error: $error', stackTrace),
+                      loading: () => log.logDebug('Loading'),
+                    );
                 ref.read(filePickerProvider.notifier).clearFile();
                 Navigator.of(context).pop();
               },
@@ -206,4 +216,3 @@ void showAddMachineDialog(BuildContext context, WidgetRef ref) {
     },
   );
 }
-

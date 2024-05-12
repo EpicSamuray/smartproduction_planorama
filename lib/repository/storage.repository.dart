@@ -34,7 +34,7 @@ class StorageRepository {
           MachineCardDto machineCardDto = MachineCardDto(
               imagesLocationPath: path,
               machineName: machineName,
-              imageId: fileId
+              fileId: fileId,
           );
           log.logInfo('File downloaded to $path');
           _machineProvider.addMachineCardDto(machineCardDto);
@@ -48,13 +48,14 @@ class StorageRepository {
     return path;
   }
 
-  Future<void> uploadFile(String fileName, String bucketId, Uint8List file) async {
+  Future<File> uploadFile(String fileName, String bucketId, Uint8List file) async {
     try {
       File uploadedFile = await _storageService.uploadImages(fileName, bucketId, file);
       log.logInfo('File uploaded: ${uploadedFile.name}');
-
+      return uploadedFile;
     } catch (e) {
       log.logError('Error uploading file: $e');
+      rethrow;
     }
   }
 }

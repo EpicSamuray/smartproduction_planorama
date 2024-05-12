@@ -35,7 +35,7 @@ class MachineRepository {
         case 'machineName':
           return element.machineName == searchValue;
         case 'imageId':
-          return element.imageId == searchValue;
+          return element.fileId == searchValue;
         default:
           return false;
       }
