@@ -2,9 +2,9 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../common/logging.dart';
+import '../../../../common/logging.dart';
 
-final Logging log = Logging('file.picker.provider.dart');
+final Logging log = Logging('file_picker_provider.dart');
 
 final filePickerProvider = StateNotifierProvider<FilePickerNotifier, AsyncValue<Map<String, dynamic>>>((ref) {
   return FilePickerNotifier();

@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
-import 'package:smartproduction_planorama/view/widget/neumorphism.container.widget.dart';
+
+import '../../../../shared/widget/neumorphism/neumorphism_container_widget.dart';
 
 class MachineCardWidget extends StatefulWidget {
   final String? filePath;

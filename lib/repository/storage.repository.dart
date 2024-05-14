@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:appwrite/models.dart';
-import 'package:smartproduction_planorama/models/machine.card.dto.dart';
+import 'package:smartproduction_planorama/src/machine-grid/data/dto/local/machine_image_location_dto.dart';
 import 'package:smartproduction_planorama/providers/machine.provider.dart';
 
 import '../common/logging.dart';
@@ -31,9 +31,8 @@ class StorageRepository {
 
 
         if (isDownloaded) {
-          MachineCardDto machineCardDto = MachineCardDto(
+          MachineImageLocationDto machineCardDto = MachineImageLocationDto(
               imagesLocationPath: path,
-              machineName: machineName,
               fileId: fileId,
           );
           log.logInfo('File downloaded to $path');
@@ -48,9 +47,13 @@ class StorageRepository {
     return path;
   }
 
-  Future<File> uploadFile(String fileName, String bucketId, Uint8List file) async {
+  Future<File> uploadFile({required String fileId, required String fileName, required String bucketId, required Uint8List file}) async {
     try {
-      File uploadedFile = await _storageService.uploadImages(fileName, bucketId, file);
+      File uploadedFile = await _storageService.uploadImages(
+        fileName: fileName,
+        bucketId: bucketId,
+        file: file,
+        fileId: fileId,);
       log.logInfo('File uploaded: ${uploadedFile.name}');
       return uploadedFile;
     } catch (e) {

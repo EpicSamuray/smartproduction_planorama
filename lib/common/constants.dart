@@ -3,10 +3,22 @@ import 'colorConverter.dart';
 class AppwriteConstant {
   static const String endpoint = 'https://appwrite-fp.hftm.bernerbros.ch';
   static const String projectID = '662bd62e002f2d720896';
-  static const String bucketId = '663fcea00038bfe17d54';
   static const String collectionID = '6640ccfe0027cd313d77';
   static const String databaseID = '6640ccf5001b247ddb0e';
+}
 
+enum AppwriteBucket {
+  machineImages('663fcea00038bfe17d54');
+
+  const AppwriteBucket(this.value);
+  final String value;
+}
+
+enum AppwriteCollections {
+  machineRessource('6640ccfe0027cd313d77');
+
+  const AppwriteCollections(this.value);
+  final String value;
 }
 
 class HexColors {

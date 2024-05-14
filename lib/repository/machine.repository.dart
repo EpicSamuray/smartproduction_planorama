@@ -1,39 +1,37 @@
 import 'package:hive/hive.dart';
 
 import '../common/logging.dart';
-import '../models/machine.card.dto.dart';
+import '../src/machine-grid/data/dto/local/machine_image_location_dto.dart';
 
 final Logging log = Logging('machine.repository.dart');
 
 
 class MachineRepository {
-  late Box<MachineCardDto> machineCardDtoBox;
+  late Box<MachineImageLocationDto> machineCardDtoBox;
 
   Future<void> openBox() async {
-    machineCardDtoBox = await Hive.openBox<MachineCardDto>('machineCardDtoBox');
+    machineCardDtoBox = await Hive.openBox<MachineImageLocationDto>('machineCardDtoBox');
     log.logInfo('Machine Card Dto Box opened');
   }
 
-  List<MachineCardDto> getAllMachineCardDto() {
+  List<MachineImageLocationDto> getAllMachineCardDto() {
     return machineCardDtoBox.values.toList();
   }
 
-  void addMachineCardDto(MachineCardDto machineCardDto) {
+  void addMachineCardDto(MachineImageLocationDto machineCardDto) {
     machineCardDtoBox.add(machineCardDto);
   }
 
-  void removeMachineCardDto(MachineCardDto machineCardDto) {
+  void removeMachineCardDto(MachineImageLocationDto machineCardDto) {
     machineCardDtoBox.delete(machineCardDto.key);
   }
 
 
-  List<MachineCardDto> searchMachineCardDto(String fieldName, dynamic searchValue) {
+  List<MachineImageLocationDto> searchMachineCardDto(String fieldName, dynamic searchValue) {
     return machineCardDtoBox.values.where((element) {
       switch(fieldName) {
         case 'imagesLocationPath':
           return element.imagesLocationPath == searchValue;
-        case 'machineName':
-          return element.machineName == searchValue;
         case 'imageId':
           return element.fileId == searchValue;
         default:

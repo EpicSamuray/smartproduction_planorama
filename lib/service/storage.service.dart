@@ -47,13 +47,13 @@ class StorageService {
     }
   }
 
-  Future<AppwriteModels.File> uploadImages(String fileName,String bucketId, Uint8List file) async {
+  Future<AppwriteModels.File> uploadImages({required String fileName, required String bucketId, required Uint8List file, required String fileId, List<String>? permission}) async {
     try {
       return await _staorage.createFile(
         bucketId: bucketId,
-        fileId: ID.unique(),
+        fileId: fileId,
         file: InputFile.fromBytes(bytes: file, filename: fileName),
-        permissions: ['read("any")'],
+        permissions: permission,
       );
     } on AppwriteException catch (e) {
       log.logError('Error uploading file: ${e.message}');

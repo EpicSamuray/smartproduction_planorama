@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
 import 'package:smartproduction_planorama/view/home.view.dart';
-import 'package:smartproduction_planorama/view/machine_planning.view.dart';
+import 'package:smartproduction_planorama/src/machine-grid/presentation/view/machine_grid_view.dart';
 import 'package:smartproduction_planorama/view/widget/sidenavigation.widget.dart';
 
 import '../providers/login.provider.dart';

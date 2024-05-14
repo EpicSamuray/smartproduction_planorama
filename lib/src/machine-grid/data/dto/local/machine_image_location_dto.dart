@@ -2,27 +2,23 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
 import 'package:smartproduction_planorama/common/toJson.abstract.dart';
 
-part 'machine.card.dto.g.dart';
+part 'machine_image_location_dto.g.dart';
 
 @HiveType(typeId: HiveTypeIds.machineCardDto)
-class MachineCardDto extends HiveObject implements JsonSerializable{
+class MachineImageLocationDto extends HiveObject implements JsonSerializable{
 
   @HiveField(0)
   String imagesLocationPath;
 
   @HiveField(1)
-  String machineName;
-
-  @HiveField(2)
   String fileId;
 
-  MachineCardDto({required this.imagesLocationPath, required this.machineName, required this.fileId});
+  MachineImageLocationDto({required this.imagesLocationPath, required this.fileId});
 
   @override
-  factory MachineCardDto.fromJson(Map<String, dynamic> json) {
-    return MachineCardDto(
+  factory MachineImageLocationDto.fromJson(Map<String, dynamic> json) {
+    return MachineImageLocationDto(
       imagesLocationPath: json['imagesLocationPath'],
-      machineName: json['machineName'],
       fileId: json['fileId']
     );
   }
@@ -31,7 +27,6 @@ class MachineCardDto extends HiveObject implements JsonSerializable{
   Map<String, dynamic> toJson() {
     return {
       'imagesLocationPath': imagesLocationPath,
-      'machineName': machineName,
       'fileId': fileId,
     };
   }
