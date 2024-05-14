@@ -18,6 +18,8 @@ final storageServiceProvider = Provider<StorageService>((ref) {
   return StorageService(ref.watch(storageProvider));
 });
 
-final storageRepositoryProvider = Provider<StorageRepository>((ref) {
-  return StorageRepository(ref.watch(storageServiceProvider), ref.read(machineProvider.notifier));
+final storageRepositoryProvider =
+    Provider.autoDispose<StorageRepository>((ref) {
+  return StorageRepository(
+      ref.watch(storageServiceProvider), ref.watch(machineProvider.notifier));
 });

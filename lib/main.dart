@@ -11,7 +11,7 @@ import 'app.dart';
 
 final Logging log = Logging('main.dart');
 
-void main() async {
+Future<void> main() async {
   debugPaintSizeEnabled = false;
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();

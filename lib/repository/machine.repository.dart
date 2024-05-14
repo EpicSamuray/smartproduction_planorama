@@ -5,13 +5,15 @@ import '../src/machine-grid/data/dto/local/machine_image_location_dto.dart';
 
 final Logging log = Logging('machine.repository.dart');
 
-
 class MachineRepository {
   late Box<MachineImageLocationDto> machineCardDtoBox;
 
-  Future<void> openBox() async {
-    machineCardDtoBox = await Hive.openBox<MachineImageLocationDto>('machineCardDtoBox');
+  Future<Box> openBox() async {
+    final box =
+        await Hive.openBox<MachineImageLocationDto>('machineCardDtoBox');
+    machineCardDtoBox = box;
     log.logInfo('Machine Card Dto Box opened');
+    return box;
   }
 
   List<MachineImageLocationDto> getAllMachineCardDto() {
@@ -26,10 +28,10 @@ class MachineRepository {
     machineCardDtoBox.delete(machineCardDto.key);
   }
 
-
-  List<MachineImageLocationDto> searchMachineCardDto(String fieldName, dynamic searchValue) {
+  List<MachineImageLocationDto> searchMachineCardDto(
+      String fieldName, dynamic searchValue) {
     return machineCardDtoBox.values.where((element) {
-      switch(fieldName) {
+      switch (fieldName) {
         case 'imagesLocationPath':
           return element.imagesLocationPath == searchValue;
         case 'imageId':
@@ -39,5 +41,4 @@ class MachineRepository {
       }
     }).toList();
   }
-
 }

@@ -1,10 +1,10 @@
 import 'package:appwrite/models.dart';
 
 import '../../../../../common/toJson.abstract.dart';
-class MachineCreatedDto extends JsonSerializable {
-  final Future<Document> document;
-  final Future<File> file;
 
+class MachineCreatedDto extends JsonSerializable {
+  final Document document;
+  final File file;
 
   MachineCreatedDto({
     required this.document,
@@ -13,8 +13,8 @@ class MachineCreatedDto extends JsonSerializable {
 
   factory MachineCreatedDto.fromJson(Map<String, dynamic> json) {
     return MachineCreatedDto(
-      document: json['document']! as Future<Document>,
-      file: json['file']! as Future<File>,
+      document: json['document'],
+      file: json['file'],
     );
   }
 

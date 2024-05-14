@@ -10,30 +10,42 @@ import '../dto/remote/machine_upload_dto.dart';
 
 final Logging log = Logging('machine_repository.dart');
 
-final createMachineDbProvider = FutureProvider.family<MachineCreatedDto, MachineUploadDto>((ref, data) {
-  final repo = ref.read(databaseRepositoryProvider);
-  final storage = ref.read(storageRepositoryProvider);
+final createMachineDbProvider =
+    FutureProvider.family<MachineCreatedDto, MachineUploadDto>(
+        (ref, data) async {
+  try {
+    final repo = ref.read(databaseRepositoryProvider);
+    final storage = ref.read(storageRepositoryProvider);
 
-  Future<Document> document = repo.createDocument(
-    collectionId: AppwriteCollections.machineRessource.value,
-    data: data.metaMachine,
-  );
+    Document document = await repo.createDocument(
+      collectionId: AppwriteCollections.machineRessource.value,
+      data: data.metaMachine,
+    );
 
-  Future<File> file = storage.uploadFile(
-    fileName: data.image.imageName,
-    bucketId: AppwriteBucket.machineImages.value,
-    file: data.image.image,
-    fileId: data.metaMachine.fileId,
-  );
+    log.logInfo('Document created: ${document.data}');
 
-  MachineCreatedDto machineCreatedDto = MachineCreatedDto(
-    document: document,
-    file: file,
-  );
-  return machineCreatedDto;
+    File file = await storage.uploadFile(
+      fileName: data.image.imageName,
+      bucketId: AppwriteBucket.machineImages.value,
+      file: data.image.image,
+      fileId: data.metaMachine.fileId,
+    );
+
+    log.logInfo('File uploaded: ${file.name}');
+
+    return MachineCreatedDto(
+      document: document,
+      file: file,
+    );
+  } catch (e, stack) {
+    // Fehlerbehandlung
+    log.logError('Failed to create machine: $e', stack);
+    throw Exception('Failed to process machine data: $e');
+  }
 });
 
-final deleteMachineDbProvider = FutureProvider.family<Document, String>((ref, documentId) {
+final deleteMachineDbProvider =
+    FutureProvider.family<Document, String>((ref, documentId) {
   final repo = ref.read(databaseRepositoryProvider);
   return repo.deleteDocument(
     collectionId: AppwriteCollections.machineRessource.value,
@@ -41,20 +53,35 @@ final deleteMachineDbProvider = FutureProvider.family<Document, String>((ref, do
   );
 });
 
-final getMachineDbProvider = FutureProvider.family<Document, String>((ref, documentId) {
+final getMachineDbProvider =
+    FutureProvider.family<Document, Map<String, dynamic>>((ref, metaDocument) {
   final repo = ref.read(databaseRepositoryProvider);
+  final query = metaDocument['query'] as List<String>;
+  final documentId = metaDocument['documentId'] as String;
   return repo.getDocument(
     collectionId: AppwriteCollections.machineRessource.value,
     documentId: documentId,
+    query: query,
   );
 });
 
-final listMachineDbProvider = FutureProvider.family<DocumentList, String>((ref, collectionId) {
+final listMachineDbProvider = FutureProvider.family
+    .autoDispose<DocumentList, String>((ref, collectionId) {
   final repo = ref.read(databaseRepositoryProvider);
-  return repo.listDocument(collectionId);
+  return repo.listDocument(collectionId: collectionId);
 });
 
-final updateMachineDbProvider = FutureProvider.family<Document, Map<String, dynamic>>((ref, tupleInfo) {
+final listMachineWithQueryDbProvider =
+    FutureProvider.family<DocumentList, Map<String, dynamic>>(
+        (ref, metaCollection) {
+  final repo = ref.read(databaseRepositoryProvider);
+  final query = metaCollection['query'] as List<String>;
+  final collectionId = metaCollection['collectionId'] as String;
+  return repo.listDocument(collectionId: collectionId, query: query);
+});
+
+final updateMachineDbProvider =
+    FutureProvider.family<Document, Map<String, dynamic>>((ref, tupleInfo) {
   final repo = ref.read(databaseRepositoryProvider);
   final data = tupleInfo['data'];
   final documentId = tupleInfo['documentId'];

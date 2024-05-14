@@ -13,8 +13,8 @@ class StorageService {
 
   StorageService(this._staorage);
 
-
-  Future<Map<String, dynamic>> downloadImages(String bucketId, String fileId) async {
+  Future<Map<String, dynamic>> downloadImages(
+      String bucketId, String fileId) async {
     try {
       Uint8List result = await _staorage.getFileDownload(
         fileId: fileId,
@@ -47,7 +47,12 @@ class StorageService {
     }
   }
 
-  Future<AppwriteModels.File> uploadImages({required String fileName, required String bucketId, required Uint8List file, required String fileId, List<String>? permission}) async {
+  Future<AppwriteModels.File> uploadImages(
+      {required String fileName,
+      required String bucketId,
+      required Uint8List file,
+      required String fileId,
+      List<String>? permission}) async {
     try {
       return await _staorage.createFile(
         bucketId: bucketId,

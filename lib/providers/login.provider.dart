@@ -30,7 +30,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
   void login(String email, String password) async {
     state = const LoginStateLoading();
     log.logInfo('State = $state');
-    try{
+    try {
       await _ref.read(authRepositoryProvider).login(email, password);
       state = const LoginStateSuccess();
       log.logInfo('State = $state');

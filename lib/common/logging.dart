@@ -17,15 +17,16 @@ class CustomPrinter extends LogPrinter {
     // Getting the stack trace and omitting the first few frames which belong to the Logger and CustomPrinter
     var trace = Trace.current(4);
     var frame = trace.frames.firstWhere(
-            (f) => !f.library.contains('logger.dart') && !f.library.contains('custom_printer.dart') && f.member != null,
-        orElse: () => Frame(Uri.parse('package:unknown'), 0, 0, 'unknown method')
-    );
+        (f) =>
+            !f.library.contains('logger.dart') &&
+            !f.library.contains('custom_printer.dart') &&
+            f.member != null,
+        orElse: () =>
+            Frame(Uri.parse('package:unknown'), 0, 0, 'unknown method'));
 
     var methodName = frame.member!;
 
-    return [
-      color!('$emoji [$time] $className | $methodName - $message')
-    ];
+    return [color!('$emoji [$time] $className | $methodName - $message')];
   }
 }
 
@@ -66,10 +67,10 @@ class L {
 class ProvidersLogger extends ProviderObserver {
   @override
   void didAddProvider(
-      ProviderBase provider,
-      Object? value,
-      ProviderContainer container,
-      ) {
+    ProviderBase provider,
+    Object? value,
+    ProviderContainer container,
+  ) {
     //super.didAddProvider(provider, value, container);
 
     L.log('''
@@ -82,11 +83,11 @@ class ProvidersLogger extends ProviderObserver {
 
   @override
   void didUpdateProvider(
-      ProviderBase provider,
-      Object? previousValue,
-      Object? newValue,
-      ProviderContainer container,
-      ) {
+    ProviderBase provider,
+    Object? previousValue,
+    Object? newValue,
+    ProviderContainer container,
+  ) {
     L.log('''
     {
       "provider": "${provider.name ?? provider.runtimeType}",
@@ -96,9 +97,9 @@ class ProvidersLogger extends ProviderObserver {
 
   @override
   void didDisposeProvider(
-      ProviderBase provider,
-      ProviderContainer container,
-      ) {
+    ProviderBase provider,
+    ProviderContainer container,
+  ) {
     //super.didDisposeProvider(provider, containers);
 
     L.log('''

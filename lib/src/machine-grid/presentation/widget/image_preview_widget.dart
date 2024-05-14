@@ -21,6 +21,7 @@ class ImagePreviewWidget extends ConsumerWidget {
           child: const Text('Change'),
         ),
       ],
-    );;
+    );
+    ;
   }
 }

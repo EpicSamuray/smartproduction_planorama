@@ -28,7 +28,6 @@ class LoginStateSuccess extends LoginState {
   List<Object> get props => [];
 }
 
-
 class LoginStateError extends LoginState {
   final String error;
 

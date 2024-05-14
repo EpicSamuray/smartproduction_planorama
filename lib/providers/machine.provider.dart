@@ -1,14 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smartproduction_planorama/src/machine-grid/data/dto/local/machine_image_location_dto.dart';
 import 'package:smartproduction_planorama/repository/machine.repository.dart';
 
 import '../common/logging.dart';
+import '../src/machine-grid/data/dto/local/machine_image_location_dto.dart';
 
 final Logging log = Logging('machine.provider.dart');
 
-final machineProvider =
-    StateNotifierProvider<MachineNotifier, AsyncValue<List<MachineImageLocationDto>>>(
-        (ref) {
+final machineProvider = StateNotifierProvider<MachineNotifier,
+    AsyncValue<List<MachineImageLocationDto>>>((ref) {
   return MachineNotifier(ref.read(machineRepositoryProvider));
 });
 
@@ -16,14 +15,14 @@ final machineRepositoryProvider = Provider<MachineRepository>((ref) {
   return MachineRepository();
 });
 
-class MachineNotifier extends StateNotifier<AsyncValue<List<MachineImageLocationDto>>> {
+class MachineNotifier
+    extends StateNotifier<AsyncValue<List<MachineImageLocationDto>>> {
   final MachineRepository repo;
 
-  MachineNotifier(this.repo) : super(const AsyncValue.loading()) {
-    init();
-  }
+  MachineNotifier(this.repo) : super(const AsyncValue.loading());
 
   Future<void> init() async {
+    log.logInfo('Machine Provider');
     await repo.openBox();
     await loadMachineCardDto();
   }
@@ -42,12 +41,14 @@ class MachineNotifier extends StateNotifier<AsyncValue<List<MachineImageLocation
   }
 
   Future<void> addMachineCardDto(MachineImageLocationDto machineCardDto) async {
+    state = const AsyncValue.loading();
     repo.addMachineCardDto(machineCardDto);
     log.logDebug('Machine Card Dto added: $machineCardDto');
-    await loadMachineCardDto();
+    state = AsyncValue.data(repo.getAllMachineCardDto());
   }
 
-  Future<void> removeMachineCardDto(MachineImageLocationDto machineCardDto) async {
+  Future<void> removeMachineCardDto(
+      MachineImageLocationDto machineCardDto) async {
     repo.removeMachineCardDto(machineCardDto);
     await loadMachineCardDto();
   }

@@ -9,17 +9,15 @@ class MenuListWidget extends StatefulWidget {
   final double? spaceBetweenItems;
   final double? width;
   final Function(int) onMenuSelected;
-  const MenuListWidget({
-    super.key,
-    required this.menuItems,
-    required this.onMenuSelected,
-    required this.menuIcons,
-    this.borderRadius = 0,
-    this.color,
-    this.spaceBetweenItems = 0,
-    this.width = 200
-  });
-
+  const MenuListWidget(
+      {super.key,
+      required this.menuItems,
+      required this.onMenuSelected,
+      required this.menuIcons,
+      this.borderRadius = 0,
+      this.color,
+      this.spaceBetweenItems = 0,
+      this.width = 200});
 
   @override
   State<MenuListWidget> createState() => _MenuListWidgetState();
@@ -34,7 +32,6 @@ class _MenuListWidgetState extends State<MenuListWidget> {
     });
     widget.onMenuSelected(index);
   }
-
 
   @override
   Widget build(BuildContext context) {

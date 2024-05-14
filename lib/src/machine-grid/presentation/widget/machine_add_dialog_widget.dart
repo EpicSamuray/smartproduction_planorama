@@ -2,8 +2,8 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/src/machine-grid/data/dto/remote/machine_db_upload_dto.dart';
 import 'package:smartproduction_planorama/src/machine-grid/data/dto/remote/machine_upload_dto.dart';
 import 'package:smartproduction_planorama/src/machine-grid/data/repo/machine_repository.dart';
@@ -23,16 +23,18 @@ class AddMachineDialogWidget extends ConsumerStatefulWidget {
   ConsumerState createState() => _AddMachineDialogWidgetState();
 }
 
-class _AddMachineDialogWidgetState extends ConsumerState<AddMachineDialogWidget> {
+class _AddMachineDialogWidgetState
+    extends ConsumerState<AddMachineDialogWidget> {
   final TextEditingController _machineNameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: AlertDialog(
         backgroundColor: HexColors.primaryColor.shade300,
-        title: const Text('Add Ressource',
-            style: TextStyle(color: Colors.white)),
+        title:
+            const Text('Add Ressource', style: TextStyle(color: Colors.white)),
         content: SizedBox(
             width: 600,
             height: 400,
@@ -43,7 +45,8 @@ class _AddMachineDialogWidgetState extends ConsumerState<AddMachineDialogWidget>
                 Expanded(
                   child: TextField(
                     controller: _machineNameController,
-                    decoration: const InputDecoration(labelText: 'Machine Name'),
+                    decoration:
+                        const InputDecoration(labelText: 'Machine Name'),
                   ),
                 ),
               ],
@@ -57,37 +60,53 @@ class _AddMachineDialogWidgetState extends ConsumerState<AddMachineDialogWidget>
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () async {
-              final file = ref.read(filePickerProvider);
-              file.when(
-                data: (data) {
-                  MachineDbUploadDto machineDbUploadDto = MachineDbUploadDto(
-                      machineName: _machineNameController.text,
-                      fileId: ID.unique()
-                  );
-
-                  MachineImageUploadDto machineImageUploadDto =
-                      MachineImageUploadDto(
-                          image: data['file'] as Uint8List,
-                          imageName: data['fileName'] as String,
-                      );
-                  MachineUploadDto machineUpload = MachineUploadDto(metaMachine: machineDbUploadDto, image: machineImageUploadDto);
-                  log.logInfo('MachineDto created: ${machineUpload.metaMachine} : ${machineUpload.image}');
-                  ref.read(createMachineDbProvider(machineUpload)).when(
-                    data: (data) => log.logInfo('Machine added'),
-                    error: (err, stack) => log.logError('Error: $err', stack),
-                    loading: () => log.logInfo('Loading'),
-                  );
-                },
-                error: (err, stack) => log.logError('Error: $err', stack),
-                loading: () => log.logInfo('Loading'),
-              );
-              Navigator.of(context).pop();
-            },
+            onPressed: () => addMachine(),
             child: const Text('Add'),
           ),
         ],
       ),
+    );
+  }
+
+  void addMachine() async {
+    final file = ref.read(filePickerProvider);
+    file.when(
+      data: (data) async {
+        try {
+          MachineDbUploadDto machineDbUploadDto = MachineDbUploadDto(
+              machineName: _machineNameController.text, fileId: ID.unique());
+
+          MachineImageUploadDto machineImageUploadDto = MachineImageUploadDto(
+            image: data['file'] as Uint8List,
+            imageName: data['fileName'] as String,
+          );
+
+          MachineUploadDto machineUpload = MachineUploadDto(
+              metaMachine: machineDbUploadDto, image: machineImageUploadDto);
+
+          log.logInfo(
+              'MachineDto created: ${machineUpload.metaMachine.machineName} : ${machineUpload.image.imageName}');
+
+          ref.watch(createMachineDbProvider(machineUpload)).when(
+                data: (data) {
+                  log.logInfo('Machine added $data');
+                  Navigator.of(context).pop(
+                      true); // true als Indikator für erfolgreiches Hinzufügen
+                },
+                error: (err, stack) {
+                  log.logError('Error: $err', stack);
+                  Navigator.of(context)
+                      .pop(false); // false als Indikator für Fehler
+                },
+                loading: () => log.logInfo('createMachine: Loading'),
+              );
+        } catch (e, stack) {
+          log.logError('Failed to add machine: $e', stack);
+        }
+      },
+      error: (err, stack) =>
+          log.logError('Error during file pick: $err', stack),
+      loading: () => log.logInfo('File picking: Loading'),
     );
   }
 }

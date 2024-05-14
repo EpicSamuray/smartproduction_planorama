@@ -26,6 +26,4 @@ class MachineUploadDto extends JsonSerializable {
       'metaMachine': metaMachine.toJson(),
     };
   }
-
-
 }

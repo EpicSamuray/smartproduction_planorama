@@ -4,7 +4,6 @@ import 'package:smartproduction_planorama/common/logging.dart';
 
 final log = Logging('auth.service.dart');
 
-
 class AuthService {
   final Client _client;
 
@@ -16,7 +15,7 @@ class AuthService {
     try {
       await getUser();
       return true;
-    } catch (e){
+    } catch (e) {
       return false;
     }
   }

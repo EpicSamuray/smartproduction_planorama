@@ -29,41 +29,35 @@ class RouterNotifier extends ChangeNotifier {
   RouterNotifier(this._ref) {
     _ref.listen<LoginState>(
       loginProvider,
-        (_, __) => notifyListeners(),
+      (_, __) => notifyListeners(),
     );
   }
 
-  String? _redirectLogic (BuildContext context, GoRouterState state) {
-
+  String? _redirectLogic(BuildContext context, GoRouterState state) {
     //Login Redirect Logic
     final loginState = _ref.read(loginProvider);
     final loggingIn = state.matchedLocation == RoutesPaths.login;
     return checkLoginStates(loggingIn, loginState);
-
-
-    }
+  }
 
   List<RouteBase> get _routes => [
-    ShellRoute(
-      builder: (context, state, child) {
-        return SideNavigationWidget(child: child);
-      },
-        routes: [
-          GoRoute(
-            path: RoutesPaths.root,
-            builder: (context, state) => const HomeView()
-          ),
-          GoRoute(
-            path: RoutesPaths.machine_planning,
-            builder: (context, state) => const MachinePlanningView()
-          )
-        ]
-    ),
-    GoRoute(
-      path: RoutesPaths.login,
-      builder: (context, state) => const LoginView(),
-    ),
-  ];
+        ShellRoute(
+            builder: (context, state, child) {
+              return SideNavigationWidget(child: child);
+            },
+            routes: [
+              GoRoute(
+                  path: RoutesPaths.root,
+                  builder: (context, state) => const HomeView()),
+              GoRoute(
+                  path: RoutesPaths.machine_planning,
+                  builder: (context, state) => const MachinePlanningView())
+            ]),
+        GoRoute(
+          path: RoutesPaths.login,
+          builder: (context, state) => const LoginView(),
+        ),
+      ];
 }
 
 String? checkLoginStates(bool loggingIn, LoginState loginState) {

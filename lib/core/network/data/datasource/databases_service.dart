@@ -15,30 +15,28 @@ class DatabasesSerivce {
 
   Databases get database => Databases(client);
 
-
   Future<Document> createDocument({
     required String collectionId,
     required String databaseId,
     required String documentId,
     List<String>? permissions,
     required JsonSerializable data,
-}) async {
+  }) async {
     try {
-      return permissions == [] ?
-       await database.createDocument(
-        collectionId: collectionId,
-        databaseId: databaseId,
-        documentId: documentId,
-        data: data.toJson(),
-      )
-      :
-      await database.createDocument(
-        collectionId: collectionId,
-        databaseId: databaseId,
-        documentId: documentId,
-        data: data.toJson(),
-        permissions: permissions,
-      );
+      return permissions == []
+          ? await database.createDocument(
+              collectionId: collectionId,
+              databaseId: databaseId,
+              documentId: documentId,
+              data: data.toJson(),
+            )
+          : await database.createDocument(
+              collectionId: collectionId,
+              databaseId: databaseId,
+              documentId: documentId,
+              data: data.toJson(),
+              permissions: permissions,
+            );
     } on AppwriteException catch (e) {
       rethrow;
     } catch (e) {
@@ -50,7 +48,7 @@ class DatabasesSerivce {
     required String collectionId,
     required String databaseId,
     required String documentId,
-}) async {
+  }) async {
     try {
       return await database.deleteDocument(
         collectionId: collectionId,
@@ -64,12 +62,11 @@ class DatabasesSerivce {
     }
   }
 
-  Future<Document> getDocument({
-    required String collectionId,
-    required String databaseId,
-    required String documentId,
-    List<String>? queries
-}) async {
+  Future<Document> getDocument(
+      {required String collectionId,
+      required String databaseId,
+      required String documentId,
+      List<String>? queries}) async {
     try {
       return await database.getDocument(
         collectionId: collectionId,
@@ -88,13 +85,13 @@ class DatabasesSerivce {
     required String collectionId,
     required String databaseId,
     List<String>? queries,
-}) async {
+  }) async {
     try {
       return await database.listDocuments(
         collectionId: collectionId,
         databaseId: databaseId,
         queries: queries,
-        );
+      );
     } on AppwriteException {
       rethrow;
     } catch (e) {
@@ -102,13 +99,12 @@ class DatabasesSerivce {
     }
   }
 
-  Future<Document> updateDocument({
-    required String collectionId,
-    required String databaseId,
-    required String documentId,
-    JsonSerializable? data,
-    List<String>? permissions
-}) async {
+  Future<Document> updateDocument(
+      {required String collectionId,
+      required String databaseId,
+      required String documentId,
+      JsonSerializable? data,
+      List<String>? permissions}) async {
     try {
       return await database.updateDocument(
         collectionId: collectionId,

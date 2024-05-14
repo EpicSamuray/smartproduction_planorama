@@ -114,9 +114,7 @@ class _SideNavigationWidgetState extends ConsumerState<SideNavigationWidget> {
                                 width: 50,
                                 height: 50,
                                 onPressed: () {
-                                  ref
-                                      .read(loginProvider.notifier)
-                                      .logout();
+                                  ref.read(loginProvider.notifier).logout();
                                 },
                                 icon: const Icon(Icons.logout,
                                     color: Colors.white),

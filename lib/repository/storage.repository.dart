@@ -9,31 +9,31 @@ import '../service/storage.service.dart';
 
 final Logging log = Logging('storage.repository.dart');
 
-
-
 class StorageRepository {
   final StorageService _storageService;
   final MachineNotifier _machineProvider;
 
   StorageRepository(this._storageService, this._machineProvider);
 
-  Future<String> downloadFile(String machineName, String bucketId, String fileId) async {
+  Future<String> downloadFile(
+      {required String bucketId, required String fileId}) async {
     bool isDownloaded = false;
     String path = '';
-    _machineProvider.searchMachineCardDto('imageId', fileId).then((value) async {
+    _machineProvider
+        .searchMachineCardDto('imageId', fileId)
+        .then((value) async {
       if (value.isEmpty) {
         log.logInfo('File already downloaded');
-        Map<String, dynamic> result  = await _storageService.downloadImages(bucketId, fileId);
+        Map<String, dynamic> result =
+            await _storageService.downloadImages(bucketId, fileId);
 
         isDownloaded = result['isDownloaded'];
         path = result['path'];
 
-
-
         if (isDownloaded) {
           MachineImageLocationDto machineCardDto = MachineImageLocationDto(
-              imagesLocationPath: path,
-              fileId: fileId,
+            imagesLocationPath: path,
+            fileId: fileId,
           );
           log.logInfo('File downloaded to $path');
           _machineProvider.addMachineCardDto(machineCardDto);
@@ -47,13 +47,18 @@ class StorageRepository {
     return path;
   }
 
-  Future<File> uploadFile({required String fileId, required String fileName, required String bucketId, required Uint8List file}) async {
+  Future<File> uploadFile(
+      {required String fileId,
+      required String fileName,
+      required String bucketId,
+      required Uint8List file}) async {
     try {
       File uploadedFile = await _storageService.uploadImages(
         fileName: fileName,
         bucketId: bucketId,
         file: file,
-        fileId: fileId,);
+        fileId: fileId,
+      );
       log.logInfo('File uploaded: ${uploadedFile.name}');
       return uploadedFile;
     } catch (e) {

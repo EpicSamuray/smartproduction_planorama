@@ -14,8 +14,6 @@ class _LoginScreenState extends ConsumerState<LoginView> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,20 +26,16 @@ class _LoginScreenState extends ConsumerState<LoginView> {
               width: MediaQuery.of(context).size.width * 0.5,
               child: Container(
                 decoration: BoxDecoration(
-                  color: HexColors.tertiaryColor.shade900,
-                  shape: BoxShape.circle
-                ),
-              )
-          ),
+                    color: HexColors.tertiaryColor.shade900,
+                    shape: BoxShape.circle),
+              )),
           Positioned(
               bottom: 0,
               right: -250,
               child: Image.asset(
-                height: MediaQuery.of(context).size.width * 0.25,
-                fit: BoxFit.fill,
-                'assets/images/logo/20_Logo_Transparent.png'
-              )
-          ),
+                  height: MediaQuery.of(context).size.width * 0.25,
+                  fit: BoxFit.fill,
+                  'assets/images/logo/20_Logo_Transparent.png')),
           Center(
             child: Container(
               width: 601,
@@ -56,20 +50,14 @@ class _LoginScreenState extends ConsumerState<LoginView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     const Text(
-                      style: TextStyle(
-                        fontSize: 64,
-                        color: Colors.white
-                      ),
-                      'Planorama'
-                    ),
+                        style: TextStyle(fontSize: 64, color: Colors.white),
+                        'Planorama'),
                     TextFormField(
                       controller: emailController,
                       decoration: const InputDecoration(
                         labelText: 'E-Mail',
                       ),
-                      style: const TextStyle(
-                        color: Colors.white
-                      ),
+                      style: const TextStyle(color: Colors.white),
                     ),
                     TextFormField(
                       controller: passwordController,
@@ -77,25 +65,22 @@ class _LoginScreenState extends ConsumerState<LoginView> {
                       decoration: const InputDecoration(
                         labelText: 'Password',
                       ),
-                      style: const TextStyle(
-                        color: Colors.white
-                      ),
+                      style: const TextStyle(color: Colors.white),
                     ),
                     SizedBox(
                       width: 424,
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          ref.read(loginProvider.notifier).login(emailController.text, passwordController.text);
+                          ref.read(loginProvider.notifier).login(
+                              emailController.text, passwordController.text);
                         },
                         child: const Text(
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14
-                          ),
-                          'Login'
-                        ),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
+                            'Login'),
                       ),
                     )
                   ],

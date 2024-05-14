@@ -13,10 +13,9 @@ class AppwriteClient {
 
   AppwriteClient._internal() {
     log.logInfo('AppwriteClient started');
-     client = Client()
-         .setEndpoint(AppwriteConstant.endpoint)
-         .setProject(AppwriteConstant.projectID)
-         .setSelfSigned(status: true);
+    client = Client()
+        .setEndpoint(AppwriteConstant.endpoint)
+        .setProject(AppwriteConstant.projectID)
+        .setSelfSigned(status: true);
   }
-
 }

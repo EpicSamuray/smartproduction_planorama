@@ -12,16 +12,17 @@ class FilePickerWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Consumer(builder: (context, ref, child) {
       return ref.watch(filePickerProvider).when(
-        data: (Map<String, dynamic> data) {
-          if (data['file'] == null) {
-            return const UploadImageButton();
-          } else {
-            return ImagePreviewWidget(data: data);
-          }
-        },
-        error: (Object error, StackTrace stackTrace) => Text('Error: $error'),
-        loading: () => const CircularProgressIndicator(),
-      );
+            data: (Map<String, dynamic> data) {
+              if (data['file'] == null) {
+                return const UploadImageButton();
+              } else {
+                return ImagePreviewWidget(data: data);
+              }
+            },
+            error: (Object error, StackTrace stackTrace) =>
+                Text('Error: $error'),
+            loading: () => const CircularProgressIndicator(),
+          );
     });
   }
 }

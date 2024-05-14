@@ -6,7 +6,7 @@ import 'package:smartproduction_planorama/common/toJson.abstract.dart';
 import 'package:smartproduction_planorama/core/network/data/datasource/databases_service.dart';
 
 final databaseRepositoryProvider = Provider<DatabaseRepository>((ref) {
-  return DatabaseRepository(ref.read(databaseServiceProvider));
+  return DatabaseRepository(ref.watch(databaseServiceProvider));
 });
 
 class DatabaseRepository {
@@ -14,7 +14,10 @@ class DatabaseRepository {
 
   DatabaseRepository(this._databasesSerivce);
 
-  Future<Document> createDocument({required String collectionId, List<String>? permission, required JsonSerializable data}) async {
+  Future<Document> createDocument(
+      {required String collectionId,
+      List<String>? permission,
+      required JsonSerializable data}) async {
     return _databasesSerivce.createDocument(
       collectionId: collectionId,
       databaseId: AppwriteConstant.databaseID,
@@ -24,7 +27,8 @@ class DatabaseRepository {
     );
   }
 
-  Future<Document> deleteDocument({required String collectionId, required String documentId}) async {
+  Future<Document> deleteDocument(
+      {required String collectionId, required String documentId}) async {
     return _databasesSerivce.deleteDocument(
       collectionId: collectionId,
       databaseId: AppwriteConstant.databaseID,
@@ -32,22 +36,31 @@ class DatabaseRepository {
     );
   }
 
-  Future<Document> getDocument({required String collectionId, required String documentId}) async {
+  Future<Document> getDocument(
+      {required String collectionId,
+      required String documentId,
+      List<String>? query}) async {
     return _databasesSerivce.getDocument(
       collectionId: collectionId,
       databaseId: AppwriteConstant.databaseID,
       documentId: collectionId,
+      queries: query,
     );
   }
 
-  Future<DocumentList> listDocument(String collectionId) async {
+  Future<DocumentList> listDocument(
+      {required String collectionId, List<String>? query}) async {
     return _databasesSerivce.listDocument(
       collectionId: collectionId,
       databaseId: AppwriteConstant.databaseID,
+      queries: query,
     );
   }
 
-  Future<Document> updateDocument({required String collectionId, required String documentId, JsonSerializable? data}) async {
+  Future<Document> updateDocument(
+      {required String collectionId,
+      required String documentId,
+      JsonSerializable? data}) async {
     return _databasesSerivce.updateDocument(
       collectionId: collectionId,
       databaseId: AppwriteConstant.databaseID,

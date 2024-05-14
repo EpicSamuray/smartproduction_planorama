@@ -10,16 +10,15 @@ class NeumorphismContainerWidget extends StatelessWidget {
   final double distance;
   final double blur;
   final bool? inset;
-  const NeumorphismContainerWidget({
-    super.key,
-    required this.child,
-    this.borderRadius,
-    this.width,
-    this.height,
-    this.inset = false,
-    required this.distance,
-    required this.blur
-  });
+  const NeumorphismContainerWidget(
+      {super.key,
+      required this.child,
+      this.borderRadius,
+      this.width,
+      this.height,
+      this.inset = false,
+      required this.distance,
+      required this.blur});
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +31,21 @@ class NeumorphismContainerWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurRadius: blur,
-            offset: inset! ? Offset(distance, distance) : Offset(-distance, -distance),
+            offset: inset!
+                ? Offset(distance, distance)
+                : Offset(-distance, -distance),
             color: Colors.white.withOpacity(0.15),
           ),
           BoxShadow(
             blurRadius: blur,
-            offset: inset! ? Offset(-distance, -distance) : Offset(distance, distance),
+            offset: inset!
+                ? Offset(-distance, -distance)
+                : Offset(distance, distance),
             color: Colors.black.withOpacity(0.5),
           ),
         ],
       ),
-       child: child,
-      );
+      child: child,
+    );
   }
 }
