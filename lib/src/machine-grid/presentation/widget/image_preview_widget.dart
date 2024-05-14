@@ -7,6 +7,7 @@ import '../provider/file_picker_provider.dart';
 
 class ImagePreviewWidget extends ConsumerWidget {
   final Map<String, dynamic> data;
+
   const ImagePreviewWidget({super.key, required this.data});
 
   @override

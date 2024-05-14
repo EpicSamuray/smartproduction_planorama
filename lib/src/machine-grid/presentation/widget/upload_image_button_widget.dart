@@ -34,6 +34,5 @@ class UploadImageButton extends ConsumerWidget {
         ),
       ),
     );
-    ;
   }
 }

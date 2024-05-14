@@ -37,7 +37,7 @@ class DatabasesSerivce {
               data: data.toJson(),
               permissions: permissions,
             );
-    } on AppwriteException catch (e) {
+    } on AppwriteException {
       rethrow;
     } catch (e) {
       rethrow;
