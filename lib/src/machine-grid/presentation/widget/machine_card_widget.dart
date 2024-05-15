@@ -44,6 +44,7 @@ class _MachineCardWidgetState extends State<MachineCardWidget> {
         widget.onPressed();
       },
       child: NeumorphismContainerWidget(
+        color: HexColors.primaryColor.shade900,
         distance: distance,
         blur: blur,
         borderRadius: 15,

@@ -21,7 +21,7 @@ final imageUpdateProvider = FutureProvider.autoDispose<void>((ref) async {
     for (Document d in documentList.documents) {
       final fileId = d.data['fileId'];
       final imagesLocationPath = d.data['imagesLocationPath'];
-
+      log.logInfo('FileId: $fileId, ImagesLocationPath: $imagesLocationPath');
       try {
         await ref.read(storageRepositoryProvider).downloadFile(
             bucketId: AppwriteBucket.machineImages.value, fileId: fileId);

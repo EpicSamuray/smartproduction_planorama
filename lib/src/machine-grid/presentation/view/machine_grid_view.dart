@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smartproduction_planorama/common/constants.dart';
+import 'package:smartproduction_planorama/shared/widget/neumorphism/neumorphism_button_widget.dart';
 import 'package:smartproduction_planorama/src/machine-grid/presentation/view/machine_card_view.dart';
 
 import '../../../../common/logging.dart';
@@ -60,6 +62,7 @@ class _MachinePlanningViewState extends ConsumerState<MachinePlanningView> {
         blur: 10,
         inset: true,
         borderRadius: 20,
+        color: HexColors.primaryColor.shade900,
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: machinesAsync.when(
@@ -69,8 +72,17 @@ class _MachinePlanningViewState extends ConsumerState<MachinePlanningView> {
                 return Container(
                     padding: const EdgeInsets.all(20),
                     child: index == 0
-                        ? const MachineCardView(
-                            isAddCard: true,
+                        ? NeumorphismButtonWidget(
+                            distance: NeumorphismConstants.distance,
+                            blur: NeumorphismConstants.blur,
+                            color: HexColors.primaryColor.shade900,
+                            borderRadius: 20,
+                            onlyIcon: true,
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.add,
+                              size: MediaQuery.of(context).size.width * 0.07,
+                            ),
                           )
                         : MachineCardView(
                             imageLocalPath:

@@ -42,16 +42,17 @@ class _SideNavigationWidgetState extends ConsumerState<SideNavigationWidget> {
   Widget build(BuildContext context) {
     return Container(
         padding:
-            const EdgeInsets.only(top: 40, left: 30, right: 30, bottom: 30),
+            const EdgeInsets.only(top: 40, left: 20, right: 20, bottom: 30),
         child: Row(
           children: [
             SizedBox(
               width: 300,
               height: double.infinity,
               child: NeumorphismContainerWidget(
+                color: HexColors.primaryColor.shade900,
                 borderRadius: 20,
-                distance: 5,
-                blur: 10,
+                distance: NeumorphismConstants.distance,
+                blur: NeumorphismConstants.blur,
                 child: Column(
                   children: [
                     const SizedBox(
@@ -80,24 +81,27 @@ class _SideNavigationWidgetState extends ConsumerState<SideNavigationWidget> {
                       height: 30,
                     ),
                     MenuListWidget(
-                        borderRadius: 15,
-                        width: 260,
-                        spaceBetweenItems: 20,
-                        menuItems: menuItems,
-                        onMenuSelected: (index) {
-                          log.logInfo('Menu selected: $index');
-                          switch (index) {
-                            case 0:
-                              context.go(RoutesPaths.root);
-                              break;
-                            case 1:
-                              context.go(RoutesPaths.machine_planning);
-                              break;
-                            default:
-                              break;
-                          }
-                        },
-                        menuIcons: menuIcons),
+                      borderRadius: 15,
+                      width: 260,
+                      buttonHeigth: 50,
+                      spaceBetweenItems: 20,
+                      menuItems: menuItems,
+                      onMenuSelected: (index) {
+                        log.logInfo('Menu selected: $index');
+                        switch (index) {
+                          case 0:
+                            context.go(RoutesPaths.root);
+                            break;
+                          case 1:
+                            context.go(RoutesPaths.machine_planning);
+                            break;
+                          default:
+                            break;
+                        }
+                      },
+                      menuIcons: menuIcons,
+                      color: HexColors.primaryColor.shade900,
+                    ),
                     Expanded(
                       child: Container(),
                     ),

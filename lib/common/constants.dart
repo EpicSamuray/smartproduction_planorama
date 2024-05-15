@@ -30,6 +30,11 @@ class HexColors {
   static final blackShadow = createMaterialColor('#1F1F1F');
 }
 
+class NeumorphismConstants {
+  static const double blur = 10;
+  static const double distance = 5;
+}
+
 class RoutesPaths {
   static const String login = '/login';
   static const String home = '/home';
