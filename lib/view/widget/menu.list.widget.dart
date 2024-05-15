@@ -46,6 +46,8 @@ class _MenuListWidgetState extends State<MenuListWidget> {
                 height: widget.spaceBetweenItems,
               ),
               MenuButtonWidget(
+                blur: 5,
+                distance: 5,
                 title: widget.menuItems[index],
                 onPressed: () => _onPressed(index),
                 icon: widget.menuIcons[index],

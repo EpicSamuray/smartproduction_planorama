@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
 import '../../../common/constants.dart';
 
@@ -31,18 +32,15 @@ class NeumorphismContainerWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurRadius: blur,
-            offset: inset!
-                ? Offset(distance, distance)
-                : Offset(-distance, -distance),
-            color: Colors.white.withOpacity(0.15),
+            inset: inset ?? false,
+            offset: Offset(-distance, -distance),
+            color: HexColors.whiteShadow.shade900,
           ),
           BoxShadow(
-            blurRadius: blur,
-            offset: inset!
-                ? Offset(-distance, -distance)
-                : Offset(distance, distance),
-            color: Colors.black.withOpacity(0.5),
-          ),
+              blurRadius: blur,
+              inset: inset ?? false,
+              offset: Offset(distance, distance),
+              color: HexColors.blackShadow.shade900),
         ],
       ),
       child: child,

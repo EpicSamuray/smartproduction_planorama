@@ -26,6 +26,8 @@ class HexColors {
   static final secondColor = createMaterialColor('#666666');
   static final tertiaryColor = createMaterialColor('#00ADC8');
   static final quaternaryColor = createMaterialColor('#FFFFFF');
+  static final whiteShadow = createMaterialColor('#474747');
+  static final blackShadow = createMaterialColor('#1F1F1F');
 }
 
 class RoutesPaths {

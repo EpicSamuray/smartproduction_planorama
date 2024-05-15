@@ -1,9 +1,8 @@
-import 'package:clay_containers/clay_containers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
+import 'package:smartproduction_planorama/shared/widget/neumorphism/neumorphism_container_widget.dart';
 import 'package:smartproduction_planorama/view/widget/menu.button.widget.dart';
 import 'package:smartproduction_planorama/view/widget/menu.list.widget.dart';
 
@@ -49,11 +48,10 @@ class _SideNavigationWidgetState extends ConsumerState<SideNavigationWidget> {
             SizedBox(
               width: 300,
               height: double.infinity,
-              child: ClayContainer(
-                color: HexColors.primaryColor.shade900,
-                borderRadius: 25,
-                depth: 20,
-                spread: 5,
+              child: NeumorphismContainerWidget(
+                borderRadius: 20,
+                distance: 5,
+                blur: 10,
                 child: Column(
                   children: [
                     const SizedBox(
@@ -118,8 +116,12 @@ class _SideNavigationWidgetState extends ConsumerState<SideNavigationWidget> {
                                 },
                                 icon: const Icon(Icons.logout,
                                     color: Colors.white),
-                                borderRadius: 15),
+                                borderRadius: 15,
+                                blur: 5,
+                                distance: 5),
                             MenuButtonWidget(
+                                blur: 5,
+                                distance: 5,
                                 isOutside: true,
                                 onlyIcon: true,
                                 width: 50,

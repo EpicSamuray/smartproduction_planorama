@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smartproduction_planorama/src/machine-grid/presentation/widget/machine_card_widget.dart';
+import 'package:smartproduction_planorama/src/machine-grid/presentation/view/machine_card_view.dart';
 
 import '../../../../common/logging.dart';
 import '../../../../providers/machine.provider.dart';
@@ -48,15 +48,18 @@ class _MachinePlanningViewState extends ConsumerState<MachinePlanningView> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    int crossAxisCount = (screenWidth / 400).floor();
     final machinesAsync = ref.watch(machineProvider);
 
     return SizedBox.expand(
         child: Padding(
       padding: const EdgeInsets.all(30),
       child: NeumorphismContainerWidget(
-        distance: 3,
-        blur: 3,
-        borderRadius: 15,
+        distance: 5,
+        blur: 10,
+        inset: true,
+        borderRadius: 20,
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: machinesAsync.when(
@@ -66,28 +69,17 @@ class _MachinePlanningViewState extends ConsumerState<MachinePlanningView> {
                 return Container(
                     padding: const EdgeInsets.all(20),
                     child: index == 0
-                        ? MachineCardWidget(
-                            onPressed: () {
-                              log.logInfo('Add machine pressed');
-                              showAddMachineDialog(context);
-                            },
-                            distance: 3,
-                            blur: 3,
+                        ? const MachineCardView(
                             isAddCard: true,
                           )
-                        : MachineCardWidget(
-                            filePath: machines[index - 1].imagesLocationPath,
-                            distance: 3,
-                            blur: 3,
-                            onPressed: () {
-                              log.logInfo(
-                                  'Machine ${machines[index - 1].fileId} pressed');
-                            },
+                        : MachineCardView(
+                            imageLocalPath:
+                                machines[index - 1].imagesLocationPath,
                           ));
               },
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 1.8,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                childAspectRatio: 0.9,
               ),
             ),
             error: (err, stack) => Text('Error: $err'),

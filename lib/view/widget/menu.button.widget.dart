@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
+
 import '../../common/logging.dart';
 
 final log = Logging('menu.button.widget.dart');
@@ -14,6 +16,8 @@ class MenuButtonWidget extends StatefulWidget {
   final Icon icon;
   final bool? isOutside;
   final bool? onlyIcon;
+  final double blur;
+  final double distance;
 
   const MenuButtonWidget({
     super.key,
@@ -26,6 +30,8 @@ class MenuButtonWidget extends StatefulWidget {
     this.borderRadius,
     this.isOutside = false,
     this.onlyIcon = false,
+    required this.blur,
+    required this.distance,
   });
 
   @override
@@ -37,20 +43,6 @@ class _MenuButtonWidgetState extends State<MenuButtonWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double distance = isPressed || widget.isActivated
-        ? widget.isOutside!
-            ? 0
-            : -3
-        : widget.isOutside!
-            ? 3
-            : 0;
-    double blur = isPressed || widget.isActivated
-        ? 5
-        : widget.isOutside!
-            ? distance == 0
-                ? 0
-                : 5
-            : 0;
     return Listener(
       onPointerDown: (event) {
         setState(() {
@@ -70,14 +62,16 @@ class _MenuButtonWidgetState extends State<MenuButtonWidget> {
           color: HexColors.primaryColor.shade900,
           boxShadow: [
             BoxShadow(
-              blurRadius: blur,
-              offset: Offset(-distance, -distance),
-              color: Colors.white.withOpacity(0.3),
+              blurRadius: widget.blur,
+              inset: isPressed || widget.isActivated,
+              offset: Offset(-widget.distance, -widget.distance),
+              color: HexColors.whiteShadow.shade900,
             ),
             BoxShadow(
-              blurRadius: blur,
-              offset: Offset(distance, distance),
-              color: Colors.black.withOpacity(0.5),
+              blurRadius: widget.blur,
+              inset: isPressed || widget.isActivated,
+              offset: Offset(widget.distance, widget.distance),
+              color: HexColors.blackShadow.shade900,
             ),
           ],
         ),
