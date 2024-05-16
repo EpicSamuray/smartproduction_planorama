@@ -78,7 +78,9 @@ class _MachinePlanningViewState extends ConsumerState<MachinePlanningView> {
                             color: HexColors.primaryColor.shade900,
                             borderRadius: 20,
                             onlyIcon: true,
-                            onPressed: () {},
+                            onPressed: () {
+                              showAddMachineDialog(context);
+                            },
                             icon: Icon(
                               Icons.add,
                               size: MediaQuery.of(context).size.width * 0.07,

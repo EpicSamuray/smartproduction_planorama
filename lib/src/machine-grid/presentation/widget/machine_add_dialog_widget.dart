@@ -60,7 +60,10 @@ class _AddMachineDialogWidgetState
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => addMachine(),
+            onPressed: () {
+              addMachine();
+              ref.read(filePickerProvider.notifier).clearFile();
+            },
             child: const Text('Add'),
           ),
         ],
@@ -87,21 +90,11 @@ class _AddMachineDialogWidgetState
           log.logInfo(
               'MachineDto created: ${machineUpload.metaMachine.machineName} : ${machineUpload.image.imageName}');
 
-          ref.watch(createMachineDbProvider(machineUpload)).when(
-                data: (data) {
-                  log.logInfo('Machine added $data');
-                  Navigator.of(context).pop(
-                      true); // true als Indikator für erfolgreiches Hinzufügen
-                },
-                error: (err, stack) {
-                  log.logError('Error: $err', stack);
-                  Navigator.of(context)
-                      .pop(false); // false als Indikator für Fehler
-                },
-                loading: () => log.logInfo('createMachine: Loading'),
-              );
+          await ref.read(createMachineDbProvider(machineUpload).future);
+          Navigator.of(context).pop(true);
         } catch (e, stack) {
           log.logError('Failed to add machine: $e', stack);
+          Navigator.of(context).pop(false);
         }
       },
       error: (err, stack) =>

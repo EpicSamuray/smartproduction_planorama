@@ -85,9 +85,9 @@ class _NeumorphismButtonWidgetState extends State<NeumorphismButtonWidget> {
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(width: 30),
+                                const SizedBox(width: 30),
                                 widget.icon ?? const Icon(Icons.error),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 widget.title ?? const Text('No Title Provided'),
                               ],
                             )),

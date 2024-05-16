@@ -2,8 +2,11 @@ import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
+import 'package:smartproduction_planorama/common/logging.dart';
 import 'package:smartproduction_planorama/common/toJson.abstract.dart';
 import 'package:smartproduction_planorama/core/network/data/datasource/databases_service.dart';
+
+final Logging log = Logging('databases_repository.dart');
 
 final databaseRepositoryProvider = Provider<DatabaseRepository>((ref) {
   return DatabaseRepository(ref.watch(databaseServiceProvider));
@@ -18,13 +21,20 @@ class DatabaseRepository {
       {required String collectionId,
       List<String>? permission,
       required JsonSerializable data}) async {
-    return _databasesSerivce.createDocument(
-      collectionId: collectionId,
-      databaseId: AppwriteConstant.databaseID,
-      documentId: ID.unique(),
-      permissions: permission,
-      data: data,
-    );
+    try {
+      log.logDebug('Creating document in collection: $collectionId');
+      Document document = await _databasesSerivce.createDocument(
+        collectionId: collectionId,
+        databaseId: AppwriteConstant.databaseID,
+        documentId: ID.unique(),
+        permissions: permission,
+        data: data,
+      );
+      log.logInfo('Document created: ${document.data}');
+      return document;
+    } catch (e) {
+      throw Exception('Failed to create document: $e');
+    }
   }
 
   Future<Document> deleteDocument(

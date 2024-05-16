@@ -17,30 +17,29 @@ final createMachineDbProvider =
     final repo = ref.read(databaseRepositoryProvider);
     final storage = ref.read(storageRepositoryProvider);
 
-    Document document = await repo.createDocument(
-      collectionId: AppwriteCollections.machineRessource.value,
-      data: data.metaMachine,
-    );
+    final results = await Future.wait([
+      repo.createDocument(
+        collectionId: AppwriteCollections.machineRessource.value,
+        data: data.metaMachine,
+      ),
+      storage.uploadFile(
+        fileName: data.image.imageName,
+        bucketId: AppwriteBucket.machineImages.value,
+        file: data.image.image,
+        fileId: data.metaMachine.fileId,
+      ),
+    ]);
 
+    Document document = results[0] as Document;
+    File file = results[1] as File;
+
+    log.logInfo('File uploaded: $file');
     log.logInfo('Document created: ${document.data}');
-
-    File file = await storage.uploadFile(
-      fileName: data.image.imageName,
-      bucketId: AppwriteBucket.machineImages.value,
-      file: data.image.image,
-      fileId: data.metaMachine.fileId,
-    );
-
-    log.logInfo('File uploaded: ${file.name}');
-
-    return MachineCreatedDto(
-      document: document,
-      file: file,
-    );
+    return MachineCreatedDto(document: document, file: file);
   } catch (e, stack) {
     // Fehlerbehandlung
     log.logError('Failed to create machine: $e', stack);
-    throw Exception('Failed to process machine data: $e');
+    rethrow;
   }
 });
 

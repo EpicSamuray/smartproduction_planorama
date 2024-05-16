@@ -23,6 +23,5 @@ class ImagePreviewWidget extends ConsumerWidget {
         ),
       ],
     );
-    ;
   }
 }

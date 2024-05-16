@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:appwrite/models.dart';
-import 'package:smartproduction_planorama/src/machine-grid/data/dto/local/machine_image_location_dto.dart';
 import 'package:smartproduction_planorama/providers/machine.provider.dart';
+import 'package:smartproduction_planorama/src/machine-grid/data/dto/local/machine_image_location_dto.dart';
 
 import '../common/logging.dart';
 import '../service/storage.service.dart';
@@ -53,14 +53,13 @@ class StorageRepository {
       required String bucketId,
       required Uint8List file}) async {
     try {
-      File uploadedFile = await _storageService.uploadImages(
+      log.logDebug('Uploading file: $fileName');
+      return _storageService.uploadImages(
         fileName: fileName,
         bucketId: bucketId,
         file: file,
         fileId: fileId,
       );
-      log.logInfo('File uploaded: ${uploadedFile.name}');
-      return uploadedFile;
     } catch (e) {
       log.logError('Error uploading file: $e');
       rethrow;
