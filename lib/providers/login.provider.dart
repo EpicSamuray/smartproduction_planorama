@@ -3,15 +3,25 @@ import 'package:smartproduction_planorama/providers/states/login.states.dart';
 import 'package:smartproduction_planorama/repository/auth.repository.dart';
 
 import '../common/logging.dart';
+import '../service/auth.service.dart';
+import 'client.provider.dart';
 
-final log = Logging('login.controller.provider.dart');
+final log = Logging('login.provider.dart');
 
-final loginControllerProvider = StateNotifierProvider<LoginController, LoginState>((ref) {
-  return LoginController(ref);
+final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
+  return LoginNotifier(ref);
 });
 
-class LoginController extends StateNotifier<LoginState> {
-  LoginController(this._ref) : super(const LoginStateInitial()) {
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  return AuthRepository(ref.read(authServiceProvider));
+});
+
+final authServiceProvider = Provider<AuthService>((ref) {
+  return AuthService(ref.read(clientProvider));
+});
+
+class LoginNotifier extends StateNotifier<LoginState> {
+  LoginNotifier(this._ref) : super(const LoginStateInitial()) {
     checkSession();
   }
 
@@ -20,7 +30,7 @@ class LoginController extends StateNotifier<LoginState> {
   void login(String email, String password) async {
     state = const LoginStateLoading();
     log.logInfo('State = $state');
-    try{
+    try {
       await _ref.read(authRepositoryProvider).login(email, password);
       state = const LoginStateSuccess();
       log.logInfo('State = $state');

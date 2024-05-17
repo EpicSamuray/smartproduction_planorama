@@ -28,4 +28,3 @@ class WindowButtonsWidget extends StatelessWidget {
     );
   }
 }
-

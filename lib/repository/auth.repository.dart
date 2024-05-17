@@ -1,5 +1,4 @@
 import 'package:appwrite/models.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../service/auth.service.dart';
 
@@ -19,7 +18,3 @@ class AuthRepository {
     return _authService.isLoggedIn();
   }
 }
-
-final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return AuthRepository(ref.read(authServiceProvider));
-});

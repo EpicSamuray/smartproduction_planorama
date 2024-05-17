@@ -1,21 +1,8 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/common/logging.dart';
-import '../common/constants.dart';
 
 final log = Logging('auth.service.dart');
-
-final clientProvider = Provider<Client>((ref) {
-  return Client()
-      .setEndpoint('${AppwriteConstant.endpoint}/v1')
-      .setProject(AppwriteConstant.projectID)
-      .setSelfSigned(status: true);
-});
-
-final authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService(ref.read(clientProvider));
-});
 
 class AuthService {
   final Client _client;
@@ -28,7 +15,7 @@ class AuthService {
     try {
       await getUser();
       return true;
-    } catch (e){
+    } catch (e) {
       return false;
     }
   }
