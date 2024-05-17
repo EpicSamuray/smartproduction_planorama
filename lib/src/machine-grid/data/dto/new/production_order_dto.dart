@@ -1,4 +1,6 @@
-class ProductionOrderDto {
+import '../../../../../common/toJson.abstract.dart';
+
+class ProductionOrderDto implements JsonSerializable {
   final String productionOrderId;
   final String wea;
   final String description;
@@ -26,6 +28,7 @@ class ProductionOrderDto {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': productionOrderId,

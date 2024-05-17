@@ -1,4 +1,6 @@
-class MachineDTO {
+import 'package:smartproduction_planorama/common/toJson.abstract.dart';
+
+class MachineDTO implements JsonSerializable {
   final String machineId;
   final String name;
   final String category;
@@ -23,6 +25,7 @@ class MachineDTO {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': machineId,

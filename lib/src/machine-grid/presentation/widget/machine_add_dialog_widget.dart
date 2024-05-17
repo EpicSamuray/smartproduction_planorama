@@ -1,17 +1,14 @@
-import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smartproduction_planorama/src/machine-grid/data/dto/remote/machine_db_upload_dto.dart';
-import 'package:smartproduction_planorama/src/machine-grid/data/dto/remote/machine_upload_dto.dart';
 import 'package:smartproduction_planorama/src/machine-grid/data/repo/machine_repository.dart';
+import 'package:smartproduction_planorama/src/machine-grid/domain/model/machine_model.dart';
 import 'package:smartproduction_planorama/src/machine-grid/presentation/widget/file_picker_widget.dart';
 
 import '../../../../common/constants.dart';
 import '../../../../common/logging.dart';
-import '../../data/dto/remote/machine_image_upload_dto.dart';
 import '../provider/file_picker_provider.dart';
 
 final Logging log = Logging('machine_add_dialog_widget.dart');
@@ -98,6 +95,16 @@ class _AddMachineDialogWidgetState
     file.when(
       data: (data) async {
         try {
+          Machine machine = Machine(
+            id: ID.unique(),
+            name: _machineNameController.text,
+            category: _categoryController.text,
+            location: _locationController.text,
+            capacity: double.parse(_capacityController.text),
+          );
+
+          //TODO: remove this
+          /*
           MachineDbUploadDto machineDbUploadDto = MachineDbUploadDto(
               machineName: _machineNameController.text, fileId: ID.unique());
 
@@ -112,7 +119,9 @@ class _AddMachineDialogWidgetState
           log.logInfo(
               'MachineDto created: ${machineUpload.metaMachine.machineName} : ${machineUpload.image.imageName}');
 
-          await ref.read(createMachineDbProvider(machineUpload).future);
+           */
+
+          await ref.read(createMachineProvider(machine).future);
           Navigator.of(context).pop(true);
         } catch (e, stack) {
           log.logError('Failed to add machine: $e', stack);

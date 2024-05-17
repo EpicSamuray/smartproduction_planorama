@@ -1,42 +1,41 @@
 import 'package:hive/hive.dart';
+import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_image_dto.dart';
 
 import '../common/logging.dart';
-import '../src/machine-grid/data/dto/new/machine_image_location_dto.dart';
 
 final Logging log = Logging('machine.repository.dart');
 
 class MachineRepository {
-  late Box<MachineImageLocationDto> machineCardDtoBox;
+  late Box<MachineImageDto> machineCardDtoBox;
 
   Future<Box> openBox() async {
-    final box =
-        await Hive.openBox<MachineImageLocationDto>('machineCardDtoBox');
+    final box = await Hive.openBox<MachineImageDto>('machineCardDtoBox');
     machineCardDtoBox = box;
     log.logInfo('Machine Card Dto Box opened');
     return box;
   }
 
-  List<MachineImageLocationDto> getAllMachineCardDto() {
+  List<MachineImageDto> getAllMachineCardDto() {
     return machineCardDtoBox.values.toList();
   }
 
-  void addMachineCardDto(MachineImageLocationDto machineCardDto) {
+  void addMachineCardDto(MachineImageDto machineCardDto) {
     machineCardDtoBox.add(machineCardDto);
   }
 
-  void removeMachineCardDto(MachineImageLocationDto machineCardDto) {
-    machineCardDtoBox.delete(machineCardDto.key);
+  void removeMachineCardDto(MachineImageDto machineCardDto) {
+    machineCardDtoBox.delete(machineCardDto);
   }
 
-  Future<List<MachineImageLocationDto>> searchMachineCardDto(
+  Future<List<MachineImageDto>> searchMachineCardDto(
       String fieldName, dynamic searchValue) async {
     return Future.delayed(Duration.zero, () {
       return machineCardDtoBox.values.where((element) {
         switch (fieldName) {
           case 'imagesLocationPath':
-            return element.imagesLocationPath == searchValue;
+            return element.imageLocalPath == searchValue;
           case 'imageId':
-            return element.fileId == searchValue;
+            return element.imageId == searchValue;
           default:
             return false;
         }

@@ -1,6 +1,8 @@
 import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_dto.dart';
 
-class OrderOperationDto {
+import '../../../../../common/toJson.abstract.dart';
+
+class OrderOperationDto implements JsonSerializable {
   final String orderOperationId;
   final int operationNumber;
   final DateTime startDate;
@@ -28,6 +30,7 @@ class OrderOperationDto {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'orderOperationId': orderOperationId,

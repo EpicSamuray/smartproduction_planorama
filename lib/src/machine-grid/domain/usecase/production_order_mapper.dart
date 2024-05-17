@@ -1,4 +1,4 @@
-import 'package:smartproduction_planorama/src/machine-grid/domain/entitis/production_order.dart';
+import 'package:smartproduction_planorama/src/machine-grid/domain/model/production_order.dart';
 
 import '../../data/dto/new/production_order_dto.dart';
 

@@ -1,32 +1,39 @@
+import 'dart:io' as dartio;
+
 import 'package:appwrite/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
-import 'package:smartproduction_planorama/src/machine-grid/data/dto/remote/machine_created_dto.dart';
+import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_dto.dart';
+import 'package:smartproduction_planorama/src/machine-grid/domain/usecase/local_storage_access.dart';
+import 'package:smartproduction_planorama/src/machine-grid/domain/usecase/machine_mapper.dart';
 
 import '../../../../common/logging.dart';
 import '../../../../core/network/data/repo/databases_repository.dart';
 import '../../../../providers/storage.provider.dart';
-import '../dto/remote/machine_upload_dto.dart';
+import '../../domain/model/machine_model.dart';
 
 final Logging log = Logging('machine_repository.dart');
 
-final createMachineDbProvider =
-    FutureProvider.family<MachineCreatedDto, MachineUploadDto>(
-        (ref, data) async {
+final createMachineProvider =
+    FutureProvider.family<bool, Machine>((ref, data) async {
   try {
     final repo = ref.read(databaseRepositoryProvider);
     final storage = ref.read(storageRepositoryProvider);
+    final MachineDTO machineDto = MachineMapper.toMachineDTO(data);
+    final dartio.File imageFile = await ref
+        .read(fileServiceProvider)
+        .readFile(fileName: data.imageId ?? '', mimeType: 'png');
 
     final results = await Future.wait([
       repo.createDocument(
         collectionId: AppwriteCollections.machineRessource.value,
-        data: data.metaMachine,
+        data: machineDto,
       ),
       storage.uploadFile(
-        fileName: data.image.imageName,
+        fileName: data.name,
         bucketId: AppwriteBucket.machineImages.value,
-        file: data.image.image,
-        fileId: data.metaMachine.fileId,
+        file: await imageFile.readAsBytes(),
+        fileId: data.imageId!,
       ),
     ]);
 
@@ -35,11 +42,10 @@ final createMachineDbProvider =
 
     log.logInfo('File uploaded: $file');
     log.logInfo('Document created: ${document.data}');
-    return MachineCreatedDto(document: document, file: file);
+    return true;
   } catch (e, stack) {
-    // Fehlerbehandlung
     log.logError('Failed to create machine: $e', stack);
-    rethrow;
+    return false;
   }
 });
 

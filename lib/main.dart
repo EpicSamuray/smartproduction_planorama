@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:smartproduction_planorama/common/logging.dart';
-import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_image_location_dto.dart';
+import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_image_dto.dart';
 
 import 'app.dart';
 
@@ -15,7 +15,7 @@ Future<void> main() async {
   debugPaintSizeEnabled = false;
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  Hive.registerAdapter(MachineImageLocationDtoAdapter());
+  Hive.registerAdapter(MachineImageDtoAdapter());
   if (kDebugMode) {
     log.logDebug('Deleting Hive Box');
     await Hive.deleteBoxFromDisk('machineCardDtoBox');

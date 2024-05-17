@@ -1,9 +1,12 @@
 import 'package:hive/hive.dart';
+import 'package:smartproduction_planorama/common/toJson.abstract.dart';
 
 import '../../../../../common/constants.dart';
 
+part 'machine_image_dto.g.dart';
+
 @HiveType(typeId: HiveTypeIds.machineCardDto)
-class MachineImageDto {
+class MachineImageDto implements JsonSerializable {
   @HiveField(0)
   final String machineId;
   @HiveField(1)
@@ -25,6 +28,7 @@ class MachineImageDto {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'imageId': imageId,

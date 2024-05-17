@@ -1,5 +1,5 @@
 import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_image_dto.dart';
-import 'package:smartproduction_planorama/src/machine-grid/domain/entitis/machine_model.dart';
+import 'package:smartproduction_planorama/src/machine-grid/domain/model/machine_model.dart';
 
 import '../../data/dto/new/machine_dto.dart';
 

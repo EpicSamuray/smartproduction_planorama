@@ -23,20 +23,13 @@ class DatabasesSerivce {
     required JsonSerializable data,
   }) async {
     try {
-      return permissions == []
-          ? await database.createDocument(
-              collectionId: collectionId,
-              databaseId: databaseId,
-              documentId: documentId,
-              data: data.toJson(),
-            )
-          : await database.createDocument(
-              collectionId: collectionId,
-              databaseId: databaseId,
-              documentId: documentId,
-              data: data.toJson(),
-              permissions: permissions,
-            );
+      return await database.createDocument(
+        collectionId: collectionId,
+        databaseId: databaseId,
+        documentId: documentId,
+        data: data.toJson(),
+        permissions: permissions,
+      );
     } on AppwriteException {
       rethrow;
     } catch (e) {

@@ -130,16 +130,16 @@ class _MachinePlanningViewState extends ConsumerState<MachinePlanningView> {
                                 MachineCardView(
                                   progressInPercent: 95,
                                   imageLocalPath:
-                                      machines[index - 1].imagesLocationPath,
+                                      machines[index - 1].imageLocalPath,
                                 ),
                                 if (showOverlay)
                                   Listener(
                                     onPointerDown: (event) {
                                       setState(() {
                                         log.logDebug(
-                                            machines[index - 1].fileId);
+                                            machines[index - 1].imageId);
                                         deleteMachines(
-                                            machines[index - 1].fileId);
+                                            machines[index - 1].imageId);
                                       });
                                     },
                                     child: Container(

@@ -1,13 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/repository/machine.repository.dart';
+import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_image_dto.dart';
 
 import '../common/logging.dart';
-import '../src/machine-grid/data/dto/new/machine_image_location_dto.dart';
 
 final Logging log = Logging('machine.provider.dart');
 
-final machineProvider = StateNotifierProvider<MachineNotifier,
-    AsyncValue<List<MachineImageLocationDto>>>((ref) {
+final machineProvider =
+    StateNotifierProvider<MachineNotifier, AsyncValue<List<MachineImageDto>>>(
+        (ref) {
   return MachineNotifier(ref.read(machineRepositoryProvider));
 });
 
@@ -15,8 +16,7 @@ final machineRepositoryProvider = Provider<MachineRepository>((ref) {
   return MachineRepository();
 });
 
-class MachineNotifier
-    extends StateNotifier<AsyncValue<List<MachineImageLocationDto>>> {
+class MachineNotifier extends StateNotifier<AsyncValue<List<MachineImageDto>>> {
   final MachineRepository repo;
 
   MachineNotifier(this.repo) : super(const AsyncValue.loading());
@@ -29,7 +29,7 @@ class MachineNotifier
 
   Future<void> loadMachineCardDto() async {
     state = const AsyncValue.loading();
-    List<MachineImageLocationDto> machineCardDto = [];
+    List<MachineImageDto> machineCardDto = [];
     try {
       log.logInfo('Loading Machine Card Dto');
       machineCardDto = repo.getAllMachineCardDto();
@@ -40,22 +40,21 @@ class MachineNotifier
     }
   }
 
-  Future<void> addMachineCardDto(MachineImageLocationDto machineCardDto) async {
+  Future<void> addMachineCardDto(MachineImageDto machineCardDto) async {
     state = const AsyncValue.loading();
     repo.addMachineCardDto(machineCardDto);
     log.logDebug('Machine Card Dto added: $machineCardDto');
     state = AsyncValue.data(repo.getAllMachineCardDto());
   }
 
-  Future<void> removeMachineCardDto(
-      MachineImageLocationDto machineCardDto) async {
+  Future<void> removeMachineCardDto(MachineImageDto machineCardDto) async {
     repo.removeMachineCardDto(machineCardDto);
     await loadMachineCardDto();
   }
 
-  Future<List<MachineImageLocationDto>> searchMachineCardDto(
+  Future<List<MachineImageDto>> searchMachineCardDto(
       String fieldName, dynamic searchValue) async {
-    List<MachineImageLocationDto> machineCardDto =
+    List<MachineImageDto> machineCardDto =
         await repo.searchMachineCardDto(fieldName, searchValue);
     log.logInfo('Machine Card Dto found: $machineCardDto');
     return machineCardDto;

@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:appwrite/models.dart';
 import 'package:smartproduction_planorama/providers/machine.provider.dart';
-import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_image_location_dto.dart';
+import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_image_dto.dart';
 
 import '../common/logging.dart';
 import '../service/storage.service.dart';
@@ -19,6 +19,7 @@ class StorageRepository {
       {required String bucketId, required String fileId}) async {
     bool isDownloaded = false;
     String path = '';
+
     _machineProvider
         .searchMachineCardDto('imageId', fileId)
         .then((value) async {
@@ -31,12 +32,13 @@ class StorageRepository {
         path = result['path'];
 
         if (isDownloaded) {
-          MachineImageLocationDto machineCardDto = MachineImageLocationDto(
-            imagesLocationPath: path,
-            fileId: fileId,
-          );
+          MachineImageDto machineCardDto = MachineImageDto(
+              imageId: fileId, imageLocalPath: path, machineId: '');
+
           log.logInfo('File downloaded to $path');
+
           _machineProvider.addMachineCardDto(machineCardDto);
+
           return path;
         } else {
           log.logError('Error downloading file');
@@ -75,7 +77,7 @@ class StorageRepository {
           .searchMachineCardDto('imageId', fileId)
           .then((value) async {
         if (value.isNotEmpty) {
-          MachineImageLocationDto machineCardDto = value.first;
+          MachineImageDto machineCardDto = value.first;
           _machineProvider.removeMachineCardDto(machineCardDto);
           log.logInfo('File deleted: $fileId');
           return true;

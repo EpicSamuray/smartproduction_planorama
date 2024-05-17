@@ -1,5 +1,5 @@
 import '../../data/dto/new/order_operation_dto.dart';
-import '../entitis/order_operation.dart';
+import '../model/order_operation.dart';
 import 'machine_mapper.dart';
 
 class OrderOperationMapper {

@@ -1,12 +1,12 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_image_dto.dart';
 
 import '../../../../common/constants.dart';
 import '../../../../common/logging.dart';
 import '../../../../providers/machine.provider.dart';
 import '../../../../providers/storage.provider.dart';
-import '../../data/dto/new/machine_image_location_dto.dart';
 import '../../data/repo/machine_repository.dart';
 
 final Logging log = Logging('image_provider.dart');
@@ -26,10 +26,10 @@ final imageUpdateProvider = FutureProvider.autoDispose<void>((ref) async {
       try {
         await ref.read(storageRepositoryProvider).downloadFile(
             bucketId: AppwriteBucket.machineImages.value, fileId: fileId);
-        var machineImageLocationDto = MachineImageLocationDto(
-          fileId: fileId,
-          imagesLocationPath: imagesLocationPath,
-        );
+        var machineImageLocationDto = MachineImageDto(
+            imageId: fileId,
+            imageLocalPath: imagesLocationPath,
+            machineId: d.$id);
         machineNotifier.addMachineCardDto(machineImageLocationDto);
         log.logInfo('Image updated for machine: $fileId');
       } catch (e) {
@@ -47,13 +47,13 @@ final imageDeleterProvider =
   log.logInfo('Starting image delete');
 
   final machineNotifier = ref.read(machineProvider.notifier);
-  final List<MachineImageLocationDto> test =
+  final List<MachineImageDto> test =
       await machineNotifier.searchMachineCardDto('imageId', data);
 
   log.logDebug('Test: ${test.length}');
 
-  final fileId = test.first.fileId;
-  final imagesLocation = test.first.imagesLocationPath;
+  final fileId = test.first.imageId;
+  final imagesLocation = test.first.imageLocalPath;
 
   log.logInfo('FileId: $fileId, ImagesLocationPath: $imagesLocation');
 
