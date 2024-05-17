@@ -1,4 +1,4 @@
-import 'colorConverter.dart';
+import 'color_converter.dart';
 
 class AppwriteConstant {
   static const String endpoint = 'https://appwrite-fp.hftm.bernerbros.ch';
@@ -39,7 +39,7 @@ class RoutesPaths {
   static const String login = '/login';
   static const String home = '/home';
   static const String root = '/';
-  static const String machine_planning = '/machine-planning';
+  static const String machinePlanning = '/machine-planning';
 }
 
 class ImagePaths {

@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:appwrite/models.dart';
 import 'package:smartproduction_planorama/providers/machine.provider.dart';
-import 'package:smartproduction_planorama/src/machine-grid/data/dto/local/machine_image_location_dto.dart';
+import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_image_location_dto.dart';
 
 import '../common/logging.dart';
 import '../service/storage.service.dart';
@@ -63,6 +63,31 @@ class StorageRepository {
     } catch (e) {
       log.logError('Error uploading file: $e');
       rethrow;
+    }
+  }
+
+  Future<bool> deleteFile(
+      {required String bucketId, required String fileId}) async {
+    try {
+      log.logDebug('Deleting file: $fileId');
+      await _storageService.deleteFile(bucketId: bucketId, fileId: fileId);
+      _machineProvider
+          .searchMachineCardDto('imageId', fileId)
+          .then((value) async {
+        if (value.isNotEmpty) {
+          MachineImageLocationDto machineCardDto = value.first;
+          _machineProvider.removeMachineCardDto(machineCardDto);
+          log.logInfo('File deleted: $fileId');
+          return true;
+        } else {
+          log.logError('Error deleting file: $fileId');
+          return false;
+        }
+      });
+      return true;
+    } catch (e) {
+      log.logError('Error deleting file: $e');
+      return false;
     }
   }
 }

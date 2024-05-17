@@ -8,8 +8,13 @@ import 'package:smartproduction_planorama/shared/widget/neumorphism/neumorphism_
 class MachineCardView extends StatefulWidget {
   final String? imageLocalPath;
   final bool? isAddCard;
+  final double progressInPercent;
 
-  const MachineCardView({super.key, this.imageLocalPath, this.isAddCard});
+  const MachineCardView(
+      {super.key,
+      this.imageLocalPath,
+      this.isAddCard,
+      required this.progressInPercent});
 
   @override
   State<MachineCardView> createState() => _MachineCardViewState();
@@ -18,6 +23,9 @@ class MachineCardView extends StatefulWidget {
 class _MachineCardViewState extends State<MachineCardView> {
   @override
   Widget build(BuildContext context) {
+    double progress =
+        widget.progressInPercent > 100 ? 100 : widget.progressInPercent;
+
     return NeumorphismButtonWidget(
       color: HexColors.primaryColor.shade900,
       distance: NeumorphismConstants.distance,
@@ -96,16 +104,20 @@ class _MachineCardViewState extends State<MachineCardView> {
                                     MediaQuery.of(context).size.height * 0.03,
                                 child: LinearProgressIndicator(
                                   borderRadius: BorderRadius.circular(10),
-                                  value: 0.5,
+                                  value: progress / 100,
                                   backgroundColor:
                                       HexColors.secondColor.shade900,
                                   valueColor: AlwaysStoppedAnimation<Color>(
-                                      HexColors.tertiaryColor.shade900),
+                                      progress <= 69 && progress >= 0
+                                          ? Colors.yellow
+                                          : progress <= 94 && progress >= 70
+                                              ? Colors.green
+                                              : Colors.red),
                                 ))),
                         Align(
                             alignment: Alignment.center,
                             child: Text(
-                              '50%',
+                              '$progress %',
                               textScaler: TextScaler.linear(
                                   ScaleSize.scaleWidth(context)),
                               style: const TextStyle(

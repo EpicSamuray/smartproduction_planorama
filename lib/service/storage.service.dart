@@ -2,9 +2,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart' as AppwriteModels;
-import 'package:smartproduction_planorama/common/logging.dart';
+import 'package:appwrite/models.dart' as appwrite_models;
 import 'package:path_provider/path_provider.dart';
+
+import '../common/logging.dart';
 
 final Logging log = Logging('storage.service.dart');
 
@@ -47,7 +48,7 @@ class StorageService {
     }
   }
 
-  Future<AppwriteModels.File> uploadImages(
+  Future<appwrite_models.File> uploadImages(
       {required String fileName,
       required String bucketId,
       required Uint8List file,
@@ -66,6 +67,24 @@ class StorageService {
     } catch (e) {
       log.logError('Error uploading file: $e');
       rethrow;
+    }
+  }
+
+  Future<bool> deleteFile(
+      {required String bucketId, required String fileId}) async {
+    try {
+      await _staorage.deleteFile(
+        fileId: fileId,
+        bucketId: bucketId,
+      );
+      log.logInfo('File deleted: $fileId');
+      return true;
+    } on AppwriteException catch (e) {
+      log.logError('Error deleting file: ${e.message}');
+      return false;
+    } catch (e) {
+      log.logError('Error deleting file: $e');
+      return false;
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -5,7 +6,7 @@ import '../../../../common/constants.dart';
 import '../../../../common/logging.dart';
 import '../../../../providers/machine.provider.dart';
 import '../../../../providers/storage.provider.dart';
-import '../../data/dto/local/machine_image_location_dto.dart';
+import '../../data/dto/new/machine_image_location_dto.dart';
 import '../../data/repo/machine_repository.dart';
 
 final Logging log = Logging('image_provider.dart');
@@ -40,3 +41,54 @@ final imageUpdateProvider = FutureProvider.autoDispose<void>((ref) async {
     log.logInfo('No documents found to update images.');
   }
 });
+
+final imageDeleterProvider =
+    FutureProvider.family.autoDispose<void, String>((ref, data) async {
+  log.logInfo('Starting image delete');
+
+  final machineNotifier = ref.read(machineProvider.notifier);
+  final List<MachineImageLocationDto> test =
+      await machineNotifier.searchMachineCardDto('imageId', data);
+
+  log.logDebug('Test: ${test.length}');
+
+  final fileId = test.first.fileId;
+  final imagesLocation = test.first.imagesLocationPath;
+
+  log.logInfo('FileId: $fileId, ImagesLocationPath: $imagesLocation');
+
+  try {
+    ref
+        .read(listMachineWithQueryDbProvider({
+      'query': [
+        Query.equal("fileId", [fileId])
+      ],
+      'collectionId': AppwriteCollections.machineRessource.value,
+    }).future)
+        .then((value) {
+      Future.wait([
+        ref.read(deleteMachineDbProvider(value.documents.first.$id).future),
+        ref.read(storageRepositoryProvider).deleteFile(
+            bucketId: AppwriteBucket.machineImages.value, fileId: fileId),
+      ]);
+    });
+    log.logInfo('Image deleted for machine: $fileId');
+  } catch (e) {
+    log.logError('Error deleting image for machine $fileId: $e');
+  }
+});
+
+/*
+  try {
+    await ref.read(storageRepositoryProvider).deleteFile(
+        bucketId: AppwriteBucket.machineImages.value, fileId: fileId);
+    machineNotifier.removeMachineCardDto(MachineImageLocationDto(
+      fileId: fileId,
+      imagesLocationPath: imagesLocationPath,
+    ));
+    log.logInfo('Image deleted for machine: $fileId');
+  } catch (e) {
+    log.logError('Error deleting image for machine $fileId: $e');
+  }
+
+ */

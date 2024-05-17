@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
 import '../common/logging.dart';
-import '../src/machine-grid/data/dto/local/machine_image_location_dto.dart';
+import '../src/machine-grid/data/dto/new/machine_image_location_dto.dart';
 
 final Logging log = Logging('machine.repository.dart');
 
@@ -28,17 +28,19 @@ class MachineRepository {
     machineCardDtoBox.delete(machineCardDto.key);
   }
 
-  List<MachineImageLocationDto> searchMachineCardDto(
-      String fieldName, dynamic searchValue) {
-    return machineCardDtoBox.values.where((element) {
-      switch (fieldName) {
-        case 'imagesLocationPath':
-          return element.imagesLocationPath == searchValue;
-        case 'imageId':
-          return element.fileId == searchValue;
-        default:
-          return false;
-      }
-    }).toList();
+  Future<List<MachineImageLocationDto>> searchMachineCardDto(
+      String fieldName, dynamic searchValue) async {
+    return Future.delayed(Duration.zero, () {
+      return machineCardDtoBox.values.where((element) {
+        switch (fieldName) {
+          case 'imagesLocationPath':
+            return element.imagesLocationPath == searchValue;
+          case 'imageId':
+            return element.fileId == searchValue;
+          default:
+            return false;
+        }
+      }).toList();
+    });
   }
 }

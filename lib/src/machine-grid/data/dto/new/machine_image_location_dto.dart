@@ -11,6 +11,8 @@ class MachineImageLocationDto extends HiveObject {
   @HiveField(1)
   String fileId;
 
-  MachineImageLocationDto(
-      {required this.imagesLocationPath, required this.fileId});
+  MachineImageLocationDto({
+    required this.imagesLocationPath,
+    required this.fileId,
+  });
 }

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smartproduction_planorama/common/constants.dart';
-import 'package:smartproduction_planorama/view/home.view.dart';
 import 'package:smartproduction_planorama/src/machine-grid/presentation/view/machine_grid_view.dart';
 import 'package:smartproduction_planorama/view/widget/sidenavigation.widget.dart';
 
 import '../providers/login.provider.dart';
 import '../providers/states/login.states.dart';
+import '../view/home.view.dart';
 import '../view/login.view.dart';
 import 'logging.dart';
 
@@ -50,7 +50,7 @@ class RouterNotifier extends ChangeNotifier {
                   path: RoutesPaths.root,
                   builder: (context, state) => const HomeView()),
               GoRoute(
-                  path: RoutesPaths.machine_planning,
+                  path: RoutesPaths.machinePlanning,
                   builder: (context, state) => const MachinePlanningView())
             ]),
         GoRoute(

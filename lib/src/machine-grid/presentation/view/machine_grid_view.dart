@@ -6,7 +6,6 @@ import 'package:smartproduction_planorama/src/machine-grid/presentation/view/mac
 
 import '../../../../common/logging.dart';
 import '../../../../providers/machine.provider.dart';
-import '../../../../shared/widget/neumorphism/neumorphism_container_widget.dart';
 import '../provider/image_provider.dart';
 import '../widget/machine_add_dialog_widget.dart';
 
@@ -21,6 +20,8 @@ class MachinePlanningView extends ConsumerStatefulWidget {
 }
 
 class _MachinePlanningViewState extends ConsumerState<MachinePlanningView> {
+  bool showOverlay = false;
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +32,12 @@ class _MachinePlanningViewState extends ConsumerState<MachinePlanningView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(machineProvider.notifier).init();
       ref.watch(imageUpdateProvider);
+    });
+  }
+
+  void deleteMachines(String fileId) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(imageDeleterProvider(fileId));
     });
   }
 
@@ -53,54 +60,114 @@ class _MachinePlanningViewState extends ConsumerState<MachinePlanningView> {
     double screenWidth = MediaQuery.of(context).size.width;
     int crossAxisCount = (screenWidth / 400).floor();
     final machinesAsync = ref.watch(machineProvider);
-
-    return SizedBox.expand(
-        child: Padding(
-      padding: const EdgeInsets.all(30),
-      child: NeumorphismContainerWidget(
-        distance: 5,
-        blur: 10,
-        inset: true,
-        borderRadius: 20,
-        color: HexColors.primaryColor.shade900,
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: machinesAsync.when(
-            data: (machines) => GridView.builder(
-              itemCount: machines.length + 1,
-              itemBuilder: (context, index) {
-                return Container(
-                    padding: const EdgeInsets.all(20),
-                    child: index == 0
-                        ? NeumorphismButtonWidget(
-                            distance: NeumorphismConstants.distance,
-                            blur: NeumorphismConstants.blur,
-                            color: HexColors.primaryColor.shade900,
-                            borderRadius: 20,
-                            onlyIcon: true,
-                            onPressed: () {
-                              showAddMachineDialog(context);
-                            },
-                            icon: Icon(
-                              Icons.add,
-                              size: MediaQuery.of(context).size.width * 0.07,
-                            ),
-                          )
-                        : MachineCardView(
-                            imageLocalPath:
-                                machines[index - 1].imagesLocationPath,
-                          ));
-              },
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                childAspectRatio: 0.9,
+    return Column(
+      children: <Widget>[
+        const Padding(padding: EdgeInsets.only(top: 30)),
+        SizedBox(
+            height: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: NeumorphismButtonWidget(
+                    onPressed: () {
+                      reloadMachines();
+                    },
+                    onlyIcon: true,
+                    blur: NeumorphismConstants.blur,
+                    distance: NeumorphismConstants.distance,
+                    color: HexColors.primaryColor.shade900,
+                    borderRadius: 20,
+                    child: const Icon(Icons.refresh, size: 40),
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: NeumorphismButtonWidget(
+                      onPressed: () {
+                        setState(() {
+                          showOverlay = !showOverlay;
+                          log.logDebug('Overlay: $showOverlay');
+                        });
+                      },
+                      onlyIcon: true,
+                      blur: NeumorphismConstants.blur,
+                      distance: NeumorphismConstants.distance,
+                      color: HexColors.primaryColor.shade900,
+                      borderRadius: 20,
+                      child:
+                          const Icon(Icons.delete, size: 40, color: Colors.red),
+                    )),
+              ],
+            )),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: machinesAsync.when(
+              data: (machines) => GridView.builder(
+                itemCount: machines.length + 1,
+                itemBuilder: (context, index) {
+                  return Container(
+                      padding: const EdgeInsets.all(20),
+                      child: index == 0
+                          ? NeumorphismButtonWidget(
+                              distance: NeumorphismConstants.distance,
+                              blur: NeumorphismConstants.blur,
+                              color: HexColors.primaryColor.shade900,
+                              borderRadius: 20,
+                              onlyIcon: true,
+                              onPressed: () {
+                                showAddMachineDialog(context);
+                              },
+                              icon: Icon(
+                                Icons.add,
+                                size: MediaQuery.of(context).size.width * 0.07,
+                              ),
+                            )
+                          : Stack(
+                              children: [
+                                MachineCardView(
+                                  progressInPercent: 95,
+                                  imageLocalPath:
+                                      machines[index - 1].imagesLocationPath,
+                                ),
+                                if (showOverlay)
+                                  Listener(
+                                    onPointerDown: (event) {
+                                      setState(() {
+                                        log.logDebug(
+                                            machines[index - 1].fileId);
+                                        deleteMachines(
+                                            machines[index - 1].fileId);
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.red.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: const Center(
+                                        child: Icon(Icons.delete,
+                                            color: Colors.white, size: 40),
+                                      ),
+                                    ),
+                                  )
+                              ],
+                            ));
+                },
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  childAspectRatio: 0.9,
+                ),
               ),
+              error: (err, stack) => Text('Error: $err'),
+              loading: () => const Center(child: CircularProgressIndicator()),
             ),
-            error: (err, stack) => Text('Error: $err'),
-            loading: () => const Center(child: CircularProgressIndicator()),
           ),
-        ),
-      ),
-    ));
+        )
+      ],
+    );
   }
 }

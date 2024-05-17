@@ -26,6 +26,9 @@ class AddMachineDialogWidget extends ConsumerStatefulWidget {
 class _AddMachineDialogWidgetState
     extends ConsumerState<AddMachineDialogWidget> {
   final TextEditingController _machineNameController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _capacityController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +46,31 @@ class _AddMachineDialogWidgetState
                 const Expanded(child: FilePickerWidget()),
                 const SizedBox(width: 20),
                 Expanded(
-                  child: TextField(
-                    controller: _machineNameController,
-                    decoration:
-                        const InputDecoration(labelText: 'Machine Name'),
-                  ),
-                ),
+                    child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    TextField(
+                      controller: _machineNameController,
+                      decoration:
+                          const InputDecoration(labelText: 'Machine Name'),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: _categoryController,
+                      decoration: const InputDecoration(labelText: 'Category'),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: _locationController,
+                      decoration: const InputDecoration(labelText: 'location'),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: _capacityController,
+                      decoration: const InputDecoration(labelText: 'Capacity'),
+                    ),
+                  ],
+                )),
               ],
             )),
         actions: <Widget>[

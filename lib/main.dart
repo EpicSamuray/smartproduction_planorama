@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:smartproduction_planorama/common/logging.dart';
-import 'package:smartproduction_planorama/src/machine-grid/data/dto/local/machine_image_location_dto.dart';
+import 'package:smartproduction_planorama/src/machine-grid/data/dto/new/machine_image_location_dto.dart';
 
 import 'app.dart';
 

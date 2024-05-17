@@ -93,7 +93,7 @@ class _SideNavigationWidgetState extends ConsumerState<SideNavigationWidget> {
                             context.go(RoutesPaths.root);
                             break;
                           case 1:
-                            context.go(RoutesPaths.machine_planning);
+                            context.go(RoutesPaths.machinePlanning);
                             break;
                           default:
                             break;

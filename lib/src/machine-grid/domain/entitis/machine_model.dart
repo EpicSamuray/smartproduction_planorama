@@ -4,8 +4,8 @@ class Machine {
   final String category;
   final String location;
   final double capacity;
-  final String? imageLocalPath;
-  final String? imageId;
+  String? imageLocalPath;
+  String? imageId;
 
   Machine({
     required this.id,
@@ -16,4 +16,9 @@ class Machine {
     this.imageLocalPath,
     this.imageId,
   });
+
+  void updateImageInformation(String imageLocalPath, String imageId) {
+    this.imageLocalPath = imageLocalPath;
+    this.imageId = imageId;
+  }
 }

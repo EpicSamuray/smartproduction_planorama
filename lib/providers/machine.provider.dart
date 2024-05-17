@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartproduction_planorama/repository/machine.repository.dart';
 
 import '../common/logging.dart';
-import '../src/machine-grid/data/dto/local/machine_image_location_dto.dart';
+import '../src/machine-grid/data/dto/new/machine_image_location_dto.dart';
 
 final Logging log = Logging('machine.provider.dart');
 
@@ -56,7 +56,7 @@ class MachineNotifier
   Future<List<MachineImageLocationDto>> searchMachineCardDto(
       String fieldName, dynamic searchValue) async {
     List<MachineImageLocationDto> machineCardDto =
-        repo.searchMachineCardDto(fieldName, searchValue);
+        await repo.searchMachineCardDto(fieldName, searchValue);
     log.logInfo('Machine Card Dto found: $machineCardDto');
     return machineCardDto;
   }
