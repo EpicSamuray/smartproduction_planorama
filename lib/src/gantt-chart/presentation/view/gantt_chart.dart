@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
@@ -36,216 +35,34 @@ class _GanttChartViewState extends State<GanttChartView> {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
+    final height = MediaQuery.of(context).size.height - 200;
     List<GanttTask> tasks = [
       GanttTask(
         start: DateTime(2024, 01, 26),
         end: DateTime(2024, 06, 16 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(2024, 01, 26),
-        end: DateTime(2024, 06, 16 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(2024, 01, 26),
-        end: DateTime(2024, 06, 16 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(2024, 01, 26),
-        end: DateTime(2024, 06, 16 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(2024, 01, 26),
-        end: DateTime(2024, 06, 16 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(2024, 01, 26),
-        end: DateTime(2024, 06, 16 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(2024, 01, 26),
-        end: DateTime(2024, 06, 16 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(2024, 01, 26),
-        end: DateTime(2024, 06, 16 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
-        duration: null,
-      ),
-      GanttTask(
-        start: DateTime(now.year, now.month, now.day + 1),
-        end: DateTime(now.year, now.month, 25 + 1),
-        label: 'ID operation description',
+        label: '$height',
         duration: null,
       ),
     ];
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        SizedBox(
-          width: 200,
+        Container(
+          margin: const EdgeInsets.only(bottom: 30),
+          width: 300,
+          height: height,
           child: GanttTaskList(
             scrollController: _scrollController4,
           ),
         ),
-        const SizedBox(width: 20),
+        const SizedBox(width: 10),
         Expanded(
           child: Column(
             children: [
               DateSelectorWidget(scrollController: _scrollController1),
               const SizedBox(height: 20),
               SizedBox(
-                height: MediaQuery.of(context).size.height - 220,
+                height: height,
                 child: GanttGridWidget(
                     horizontalScrollController: _scrollController2,
                     verticalScrollController: _scrollController3,

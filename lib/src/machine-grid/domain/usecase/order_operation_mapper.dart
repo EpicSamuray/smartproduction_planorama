@@ -24,7 +24,7 @@ class OrderOperationMapper {
       orderOperationId: orderOperation.id,
       operationNumber: orderOperation.operationNumber,
       startDate: orderOperation.startDate,
-      endDate: orderOperation.endDate,
+      endDate: orderOperation.endDate!,
       nextMachine: MachineMapper.toMachineDTO(orderOperation.nextMachine),
       previousMachine:
           MachineMapper.toMachineDTO(orderOperation.previousMachine),

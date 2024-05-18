@@ -5,18 +5,19 @@ import '../../domain/model/gantt_task.dart';
 class TaskWidget extends StatelessWidget {
   final GanttTask task;
   final double columnWidth;
+  final double rowHeight;
   final int rowIndex;
 
   const TaskWidget({
     super.key,
     required this.task,
     required this.columnWidth,
+    required this.rowHeight,
     required this.rowIndex,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Berechne die Start- und Endtage im Jahr
     final int startDay =
         task.start.difference(DateTime(task.start.year, 1, 1)).inDays;
     final int endDay = task.calculatedEnd
@@ -25,14 +26,14 @@ class TaskWidget extends StatelessWidget {
 
     final double left = startDay * columnWidth;
     final double width = (endDay - startDay + 1) * columnWidth;
-    final double top = rowIndex * 35;
+    final double top = rowIndex * rowHeight;
 
     return Positioned(
       left: left,
       top: top,
       child: Container(
         width: width,
-        height: 30,
+        height: rowHeight - 5, // Adjust height to fit within row height
         decoration: BoxDecoration(
           color: Colors.cyan,
           borderRadius: BorderRadius.circular(20),
