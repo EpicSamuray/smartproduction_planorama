@@ -21,7 +21,7 @@ class GanttGridWidget extends StatelessWidget {
     final double totalHeight = tasks.length * 35.0;
 
     return Padding(
-        padding: const EdgeInsets.only(left: 50, right: 50, top: 10),
+        padding: const EdgeInsets.only(left: 50, right: 50, top: 0),
         child: SingleChildScrollView(
           controller: horizontalScrollController,
           scrollDirection: Axis.horizontal,
