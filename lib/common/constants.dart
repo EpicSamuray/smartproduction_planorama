@@ -31,8 +31,8 @@ class HexColors {
 }
 
 class NeumorphismConstants {
-  static const double blur = 10;
-  static const double distance = 5;
+  static const double blur = 5;
+  static const double distance = 3;
 }
 
 class RoutesPaths {
