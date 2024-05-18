@@ -6,7 +6,8 @@ class DayWidget extends StatelessWidget {
   final int month;
   final int day;
 
-  DayWidget({required this.year, required this.month, required this.day});
+  const DayWidget(
+      {super.key, required this.year, required this.month, required this.day});
 
   @override
   Widget build(BuildContext context) {

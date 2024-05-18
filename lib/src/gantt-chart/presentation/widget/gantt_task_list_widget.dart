@@ -3,7 +3,8 @@ import 'package:smartproduction_planorama/common/constants.dart';
 import 'package:smartproduction_planorama/shared/widget/neumorphism/neumorphism_container_widget.dart';
 
 class GanttTaskList extends StatelessWidget {
-  const GanttTaskList({super.key});
+  final ScrollController scrollController;
+  const GanttTaskList({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class GanttTaskList extends StatelessWidget {
         blur: NeumorphismConstants.blur,
         color: HexColors.primaryColor.shade900,
         inset: true,
-        child: Container());
+        child: SingleChildScrollView(
+            controller: scrollController, child: Container()));
   }
 }

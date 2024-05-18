@@ -1,90 +1,110 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/model/gantt_task.dart';
+import 'task_widget.dart';
 
 class GanttGridWidget extends StatelessWidget {
   final List<GanttTask> tasks;
-  final ScrollController scrollController;
+  final ScrollController horizontalScrollController;
+  final ScrollController verticalScrollController;
+  final double columnWidth = 34.0;
 
-  const GanttGridWidget({required this.tasks, required this.scrollController});
+  const GanttGridWidget(
+      {super.key,
+      required this.tasks,
+      required this.horizontalScrollController,
+      required this.verticalScrollController});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: scrollController,
-      scrollDirection: Axis.horizontal,
-      child: Container(
-        padding: EdgeInsets.all(16.0),
-        child: CustomPaint(
-          size: Size(MediaQuery.of(context).size.width * 2, 300),
-          painter: GanttChartPainter(tasks: tasks),
-        ),
-      ),
-    );
+    final double totalWidth = calculateGridWidth();
+    final double totalHeight = tasks.length * 35.0;
+
+    return Padding(
+        padding: const EdgeInsets.only(left: 50, right: 50, top: 10),
+        child: SingleChildScrollView(
+          controller: horizontalScrollController,
+          scrollDirection: Axis.horizontal,
+          child: SingleChildScrollView(
+            controller: verticalScrollController,
+            scrollDirection: Axis.vertical,
+            child: SizedBox(
+              width: totalWidth,
+              height: totalHeight,
+              child: Stack(
+                children: [
+                  buildGrid(totalWidth, totalHeight),
+                  ...tasks.asMap().entries.map((entry) {
+                    int rowIndex = entry.key;
+                    GanttTask task = entry.value;
+                    return TaskWidget(
+                        task: task,
+                        columnWidth: columnWidth,
+                        rowIndex: rowIndex);
+                  }),
+                ],
+              ),
+            ),
+          ),
+        ));
   }
-}
 
-class GanttChartPainter extends CustomPainter {
-  final List<GanttTask> tasks;
+  double calculateGridWidth() {
+    final DateTime now = DateTime.now();
+    final int year = now.year;
 
-  GanttChartPainter({required this.tasks});
+    int totalDays = 0;
+    for (int month = 1; month <= 12; month++) {
+      totalDays += DateUtils.getDaysInMonth(year, month);
+    }
 
-  @override
-  void paint(Canvas canvas, Size size) {
+    return totalDays * columnWidth;
+  }
+
+  Widget buildGrid(double totalWidth, double totalHeight) {
     final Paint gridPaint = Paint()
       ..color = Colors.cyan
       ..strokeWidth = 1.0;
-
-    final Paint barPaint = Paint()
-      ..color = Colors.cyan
-      ..style = PaintingStyle.fill;
 
     final Paint weekendPaint = Paint()
       ..color = Colors.red.withOpacity(0.3)
       ..style = PaintingStyle.fill;
 
-    final double columnWidth = size.width / 31; // Assuming one month view
+    return CustomPaint(
+      size: Size(totalWidth, totalHeight),
+      painter: GridPainter(
+          columnWidth: columnWidth,
+          weekendPaint: weekendPaint,
+          gridPaint: gridPaint),
+    );
+  }
+}
 
-    // Draw grid lines
-    for (int i = 0; i <= 31; i++) {
-      double x = i * columnWidth;
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), gridPaint);
-    }
+class GridPainter extends CustomPainter {
+  final double columnWidth;
+  final Paint weekendPaint;
+  final Paint gridPaint;
 
-    // Draw weekend highlights
-    for (int i = 0; i < 31; i++) {
-      DateTime date =
-          DateTime(DateTime.now().year, DateTime.now().month, i + 1);
+  GridPainter(
+      {required this.columnWidth,
+      required this.weekendPaint,
+      required this.gridPaint});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    for (double x = 0; x < size.width; x += columnWidth) {
+      DateTime date = DateTime(DateTime.now().year)
+          .add(Duration(days: (x / columnWidth).round()));
       if (date.weekday == DateTime.saturday ||
           date.weekday == DateTime.sunday) {
-        double x = i * columnWidth;
         canvas.drawRect(
             Rect.fromLTWH(x, 0, columnWidth, size.height), weekendPaint);
       }
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), gridPaint);
     }
 
-    // Draw tasks
-    for (var task in tasks) {
-      int startDayOfMonth = task.start.day;
-      int endDayOfMonth = task.end.day;
-
-      double left = (startDayOfMonth - 1) * columnWidth;
-      double right = endDayOfMonth * columnWidth;
-      double top = 100.0;
-      double bottom = 150.0;
-
-      Rect barRect = Rect.fromLTRB(left, top, right, bottom);
-      canvas.drawRect(barRect, barPaint);
-
-      // Draw label
-      TextPainter textPainter = TextPainter(
-        text: TextSpan(
-          text: task.label,
-          style: TextStyle(color: Colors.cyan, fontSize: 12),
-        ),
-      );
-      textPainter.layout(minWidth: 0, maxWidth: right - left);
-      textPainter.paint(canvas, Offset(left + 4, top + 4));
+    for (double y = 0; y < size.height; y += 35) {
+      canvas.drawLine(Offset(0, y + -5), Offset(size.width, y), gridPaint);
     }
   }
 

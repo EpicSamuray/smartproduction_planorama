@@ -9,7 +9,8 @@ class WeekWidget extends StatelessWidget {
   final int month;
 
   const WeekWidget(
-      {required this.weekNumber,
+      {super.key,
+      required this.weekNumber,
       required this.days,
       required this.year,
       required this.month});
@@ -32,7 +33,6 @@ class WeekWidget extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(width: 10),
       ],
     );
   }
