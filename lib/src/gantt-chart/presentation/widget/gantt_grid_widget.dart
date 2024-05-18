@@ -7,46 +7,51 @@ class GanttGridWidget extends StatelessWidget {
   final List<GanttTask> tasks;
   final ScrollController horizontalScrollController;
   final ScrollController verticalScrollController;
+  final double rowHeight = 35.0;
   final double columnWidth = 34.0;
 
-  const GanttGridWidget(
-      {super.key,
-      required this.tasks,
-      required this.horizontalScrollController,
-      required this.verticalScrollController});
+  const GanttGridWidget({
+    super.key,
+    required this.tasks,
+    required this.horizontalScrollController,
+    required this.verticalScrollController,
+  });
 
   @override
   Widget build(BuildContext context) {
     final double totalWidth = calculateGridWidth();
-    final double totalHeight = tasks.length * 35.0;
+    final double totalHeight = tasks.length * rowHeight;
 
     return Padding(
-        padding: const EdgeInsets.only(left: 50, right: 50, top: 0),
+      padding: const EdgeInsets.only(left: 50, right: 50, top: 0),
+      child: SingleChildScrollView(
+        controller: horizontalScrollController,
+        scrollDirection: Axis.horizontal,
         child: SingleChildScrollView(
-          controller: horizontalScrollController,
-          scrollDirection: Axis.horizontal,
-          child: SingleChildScrollView(
-            controller: verticalScrollController,
-            scrollDirection: Axis.vertical,
-            child: SizedBox(
-              width: totalWidth,
-              height: totalHeight,
-              child: Stack(
-                children: [
-                  buildGrid(totalWidth, totalHeight),
-                  ...tasks.asMap().entries.map((entry) {
-                    int rowIndex = entry.key;
-                    GanttTask task = entry.value;
-                    return TaskWidget(
-                        task: task,
-                        columnWidth: columnWidth,
-                        rowIndex: rowIndex);
-                  }),
-                ],
-              ),
+          controller: verticalScrollController,
+          scrollDirection: Axis.vertical,
+          child: SizedBox(
+            width: totalWidth,
+            height: totalHeight,
+            child: Stack(
+              children: [
+                buildGrid(totalWidth, totalHeight),
+                ...tasks.asMap().entries.map((entry) {
+                  int rowIndex = entry.key;
+                  GanttTask task = entry.value;
+                  return TaskWidget(
+                    task: task,
+                    columnWidth: columnWidth,
+                    rowHeight: rowHeight,
+                    rowIndex: rowIndex,
+                  );
+                }),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   double calculateGridWidth() {
@@ -73,22 +78,27 @@ class GanttGridWidget extends StatelessWidget {
     return CustomPaint(
       size: Size(totalWidth, totalHeight),
       painter: GridPainter(
-          columnWidth: columnWidth,
-          weekendPaint: weekendPaint,
-          gridPaint: gridPaint),
+        columnWidth: columnWidth,
+        rowHeight: rowHeight,
+        weekendPaint: weekendPaint,
+        gridPaint: gridPaint,
+      ),
     );
   }
 }
 
 class GridPainter extends CustomPainter {
   final double columnWidth;
+  final double rowHeight;
   final Paint weekendPaint;
   final Paint gridPaint;
 
-  GridPainter(
-      {required this.columnWidth,
-      required this.weekendPaint,
-      required this.gridPaint});
+  GridPainter({
+    required this.columnWidth,
+    required this.rowHeight,
+    required this.weekendPaint,
+    required this.gridPaint,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -103,8 +113,8 @@ class GridPainter extends CustomPainter {
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), gridPaint);
     }
 
-    for (double y = 0; y < size.height; y += 35) {
-      canvas.drawLine(Offset(0, y + -5), Offset(size.width, y), gridPaint);
+    for (double y = 0; y < size.height; y += rowHeight) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), gridPaint);
     }
   }
 
